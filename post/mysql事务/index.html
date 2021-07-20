@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>mysql事务 - CHANGE</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="bsworld" /><meta name="description" content="" /><meta name="keywords" content="Mac, Github, Vue, React, Front End" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/mysql%E4%BA%8B%E5%8A%A1/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.651e6917abb0239242daa570c2bec9867267bbcd83646da5a850afe573347b44.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/reset-even.css">
+
+
+<meta property="og:title" content="mysql事务" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/mysql%E4%BA%8B%E5%8A%A1/" />
+<meta property="article:published_time" content="2021-03-12T17:14:45+08:00" />
+<meta property="article:modified_time" content="2021-03-12T17:14:45+08:00" />
+<meta itemprop="name" content="mysql事务">
+<meta itemprop="description" content="">
+<meta itemprop="datePublished" content="2021-03-12T17:14:45+08:00" />
+<meta itemprop="dateModified" content="2021-03-12T17:14:45+08:00" />
+<meta itemprop="wordCount" content="5035">
+
+
+
+<meta itemprop="keywords" content="mysql,traction," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="mysql事务"/>
+<meta name="twitter:description" content=""/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">CHANGE</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于我</li>
+      </a><a href="https://github.com/abxworld/abxworld.github.io">
+        <li class="mobile-menu-item">阅读清单</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">CHANGE</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于我</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/abxworld/abxworld.github.io">阅读清单</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">mysql事务</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-12 17:14 </span>
+        <div class="post-category">
+            <a href="/categories/mysql/"> mysql </a>
+            </div>
+          <span class="more-meta"> 约 5035 字 </span>
+          <span class="more-meta"> 预计阅读 11 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content always-active">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#事务的特性">事务的特性</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#隔离级别">隔离级别</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#mysql日志">mysql日志</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+    <div class="post-content">
+      <p><a href="https://draveness.me/mysql-transaction/">mysql事务实现</a></p>
+<h2 id="事务的特性">事务的特性</h2>
+<h4 id="原子性">原子性</h4>
+<ul>
+<li>
+<p>原子性是指事务是一个不可分割的工作单位，事务中的操作要么全部成功，要么全部失败。比如在同一个事务中的SQL语句，要么全部执行成功，要么全部执行失败。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="n">begin</span> <span class="n">transaction</span><span class="p">;</span>
+    <span class="k">update</span> <span class="n">account</span> <span class="kt">set</span> <span class="n">money</span> <span class="o">=</span> <span class="n">money</span><span class="o">-</span><span class="mi">100</span> <span class="k">where</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;张三&#39;</span><span class="p">;</span>
+    <span class="k">update</span> <span class="n">account</span> <span class="kt">set</span> <span class="n">money</span> <span class="o">=</span> <span class="n">money</span><span class="o">+</span><span class="mi">100</span> <span class="k">where</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;李四&#39;</span><span class="p">;</span>
+<span class="n">commit</span> <span class="n">transaction</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>原子性是通过undo log来实现的，当执行失败回滚的时候通过undo log来实现回滚，可以undo log中存在一条与写入语句相反的语句，比如说insert对应delete。</p>
+</li>
+</ul>
+<h4 id="隔离性">隔离性</h4>
+<p>事务的隔离性是多个用户并发访问数据库时，数据库为每一个用户开启的事务，不能被其他事务的操作数据所干扰，多个并发事务之间要相互隔离。</p>
+<h4 id="一致性">一致性</h4>
+<p>官网上事务一致性的概念是：事务必须使数据库从一个一致性状态变换到另外一个一致性状态。</p>
+<p>换一种方式理解就是：事务按照预期生效，数据的状态是预期的状态。</p>
+<p>举例说明：张三向李四转100元，转账前和转账后的数据是正确的状态，这就叫一致性，如果出现张三转出100元，李四账号没有增加100元这就出现了数据错误，就没有达到一致性。</p>
+<h4 id="持久性">持久性</h4>
+<ul>
+<li>
+<p>持久性是指一个事务一旦被提交，它对数据库中数据的改变就是永久性的，接下来即使数据库发生故障也不应该对其有任何影响。</p>
+<p>例如我们在使用JDBC操作数据库时，在提交事务方法后，提示用户事务操作完成，当我们程序执行完成直到看到提示后，就可以认定事务以及正确提交，即使这时候数据库出现了问题，也必须要将我们的事务完全执行完成，否则就会造成我们看到提示事务处理完毕，但是数据库因为故障而没有执行事务的重大错误。</p>
+</li>
+<li>
+<p>持久性通过redo log来实现，重做日志分为两部分一部分是重做日志缓冲区，一部分是在磁盘上的重做磁盘文件，文件是持久化的</p>
+</li>
+</ul>
+<h2 id="隔离级别">隔离级别</h2>
+<ul>
+<li>
+<p>读未提交</p>
+<p>事务A读取到了事务B未提交的事务，但是当事务B回滚时，事务A读到的数据也就成为了脏数据，也就是脏读</p>
+</li>
+<li>
+<p>读已提交(不可重复度)</p>
+<p>事务A在第一次读取到一个结果，当事务B执行更新语句的时候，事务A再进行读取，读到了另一个结果，也就是说两次读取的结果不一致，也就是不可重复读，通过MVCC的方式，事务A的readview会每次都更新成最新的事务id，也就是读取的是最新的数据。</p>
+</li>
+<li>
+<p>可重复读（mysql默认的事务隔离级别）</p>
+<p>在此隔离级别下，通过MVCC的方式，事务A的readview会定格在第一次读取时的事务版本号，下次读取也不会更新，也就是每次读取的都是历史版本的数据，解决了不可重复读的问题，但是对于增删改操作时无法避免幻读的问题</p>
+</li>
+<li>
+<p>串行化</p>
+<p>事务间串行化处理，是最严格的事务隔离级别，只有当上一个事务结束后下个事务才能继续执行</p>
+</li>
+</ul>
+<h4 id="快照读和当前读">快照读和当前读</h4>
+<blockquote>
+<p>出现了上面的情况我们需要知道为什么会出现这种情况。在查阅了一些资料后发现在RR级别中，通过MVCC机制，虽然让数据变得可重复读，但我们读到的数据可能是历史数据，不是数据库最新的数据。这种读取历史数据的方式，我们叫它快照读 (snapshot read)，而读取数据库最新版本数据的方式，叫当前读 (current read)。</p>
+</blockquote>
+<p><a href="https://zhuanlan.zhihu.com/p/52977862">MVCC参考链接</a></p>
+<h5 id="select-快照读">select 快照读</h5>
+<blockquote>
+<p>当执行select操作是innodb默认会执行快照读，会记录下这次select后的结果，之后select 的时候就会返回这次快照的数据，即使其他事务提交了不会影响当前select的数据，这就实现了可重复读了。快照的生成当在第一次执行select的时候，也就是说假设当A开启了事务，然后没有执行任何操作，这时候B insert了一条数据然后commit,这时候A执行 select，那么返回的数据中就会有B添加的那条数据。之后无论再有其他事务commit都没有关系，因为快照已经生成了，后面的select都是根据快照来的。</p>
+</blockquote>
+<h5 id="当前读">当前读</h5>
+<blockquote>
+<p>对于会对数据修改的操作(update、insert、delete)都是采用当前读的模式。在执行这几个操作时会读取最新的记录，即使是别的事务提交的数据也可以查询到。假设要update一条记录，但是在另一个事务中已经delete掉这条数据并且commit了，如果update就会产生冲突，所以在update的时候需要知道最新的数据。也正是因为这样所以才导致上面我们测试的那种情况。</p>
+</blockquote>
+<blockquote>
+<p>select的当前读需要手动的加锁：</p>
+</blockquote>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="k">table</span> <span class="k">where</span> <span class="o">?</span> <span class="k">lock</span> <span class="k">in</span> <span class="n">share</span> <span class="n">mode</span><span class="p">;</span>
+<span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="k">table</span> <span class="k">where</span> <span class="o">?</span> <span class="k">for</span> <span class="k">update</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>**结论:**在事务的可重复读隔离级别下，并不能完全解决幻读的问题，但是如果在事务中只执行select操作，因为查询的是快照，可以保证不会出现幻读的情况下，但是如果是执行增删改操作依然会出现幻读的情况(因为增删改前需要执行查询数据)</p>
+</blockquote>
+<h5 id="实际案例一首先关闭数据库的自动提交事务功能">实际案例一(首先关闭数据库的自动提交事务功能)</h5>
+<table>
+<thead>
+<tr>
+<th>事务A</th>
+<th>事务B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>begin</td>
+<td></td>
+</tr>
+<tr>
+<td>select * from user_info where id &lt;= 10 and id &gt;= 1;</td>
+<td></td>
+</tr>
+<tr>
+<td>/</td>
+<td>begin</td>
+</tr>
+<tr>
+<td>/</td>
+<td>Insert into user_info (id,name) values(5, &ldquo;e&rdquo;)</td>
+</tr>
+<tr>
+<td>/</td>
+<td>Commit</td>
+</tr>
+<tr>
+<td>select * from user_info where id &lt;= 10 and id &gt;= 1;</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>事务A第一次查询的结果:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">user_info</span> <span class="k">where</span> <span class="n">id</span> <span class="o">&lt;=</span> <span class="mi">10</span> <span class="k">and</span> <span class="n">id</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="o">+----+------+</span>
+<span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">name</span> <span class="o">|</span>
+<span class="o">+----+------+</span>
+<span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span> <span class="n">a</span>    <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">2</span> <span class="o">|</span> <span class="n">b</span>    <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">3</span> <span class="o">|</span> <span class="n">c</span>    <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">4</span> <span class="o">|</span> <span class="n">d</span>    <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">6</span> <span class="o">|</span> <span class="n">f</span>    <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">7</span> <span class="o">|</span> <span class="n">g</span>    <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">8</span> <span class="o">|</span> <span class="n">h</span>    <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">9</span> <span class="o">|</span> <span class="n">i</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="mi">10</span> <span class="o">|</span> <span class="n">j</span>    <span class="o">|</span>
+<span class="o">+----+------+</span>
+<span class="mi">10</span> <span class="n">rows</span> <span class="k">in</span> <span class="kt">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>事务A第二次查询结果:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">user_info</span> <span class="k">where</span> <span class="n">id</span> <span class="o">&lt;=</span> <span class="mi">10</span> <span class="k">and</span> <span class="n">id</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="o">+----+------+</span>
+<span class="o">|</span> <span class="n">id</span> <span class="o">|</span> <span class="n">name</span> <span class="o">|</span>
+<span class="o">+----+------+</span>
+<span class="o">|</span>  <span class="mi">1</span> <span class="o">|</span> <span class="n">a</span>    <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">2</span> <span class="o">|</span> <span class="n">b</span>    <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">3</span> <span class="o">|</span> <span class="n">c</span>    <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">4</span> <span class="o">|</span> <span class="n">d</span>    <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">6</span> <span class="o">|</span> <span class="n">f</span>    <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">7</span> <span class="o">|</span> <span class="n">g</span>    <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">8</span> <span class="o">|</span> <span class="n">h</span>    <span class="o">|</span>
+<span class="o">|</span>  <span class="mi">9</span> <span class="o">|</span> <span class="n">i</span>    <span class="o">|</span>
+<span class="o">|</span> <span class="mi">10</span> <span class="o">|</span> <span class="n">j</span>    <span class="o">|</span>
+<span class="o">+----+------+</span>
+<span class="mi">10</span> <span class="n">rows</span> <span class="k">in</span> <span class="kt">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>事务A在执行第一次和第二次查询中间，事务B插入了新的数据，但是事务A的第二次查询并没有出现查询出事务B的内容，也就是说通过mvcc的版本控制技术，在RR隔离级别下，事务A的readView会在第一次查询的时候生成一个事务版本号，对于事务B提交的事务也就是会生成一个新的更高的事务版本号，事务A的事务版本号小于事务B的事务版本号也就不会查询出来，换句话说事务A进行读取的时候进行的是快照读。</p>
+</blockquote>
+<h5 id="实际案例二对事务进行当前读"><strong>实际案例二</strong>（对事务进行当前读）</h5>
+<table>
+<thead>
+<tr>
+<th>事务A</th>
+<th>事务B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>begin</td>
+<td></td>
+</tr>
+<tr>
+<td>select * from user_info where id &lt;= 10 and id &gt;= 1 for update;</td>
+<td></td>
+</tr>
+<tr>
+<td>/</td>
+<td>begin</td>
+</tr>
+<tr>
+<td>/</td>
+<td>Insert into user_info (id,name) values(5, &ldquo;hello&rdquo;)</td>
+</tr>
+<tr>
+<td>/</td>
+<td>Commit</td>
+</tr>
+<tr>
+<td>select * from user_info where id &lt;= 10 and id &gt;= 1 for update;</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>当事务A开始进行第一次查询，强制当前读的时候，会对id&gt;=1及id&lt;=10区间再向左右扩展区间，加上间隙锁，这个时候开启事务B，插入id为5（如果为11也是在间隙锁锁定范围内）的数据由于在间隙锁范围内则插入会阻塞，直到事务A提交后解除阻塞或者超时(但是不会提交事务B,仍需要手动提交commit)，但是如果插入id为10000的话，则不会阻塞，因为不在间隙锁的锁定范围内</p>
+</blockquote>
+<h5 id="实际案例三"><strong>实际案例三</strong></h5>
+<table>
+<thead>
+<tr>
+<th align="left">事务A</th>
+<th>事务B</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">begin</td>
+<td></td>
+</tr>
+<tr>
+<td align="left">update user_info set name = &lsquo;hello&rsquo; where id = 10;</td>
+<td></td>
+</tr>
+<tr>
+<td align="left">/</td>
+<td>begin</td>
+</tr>
+<tr>
+<td align="left">/</td>
+<td>update user_info set name = &lsquo;word&rsquo; where id = 10;</td>
+</tr>
+<tr>
+<td align="left">/</td>
+<td>commit</td>
+</tr>
+<tr>
+<td align="left">select * from user_info where id = 10;</td>
+<td></td>
+</tr>
+<tr>
+<td align="left">commit</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>由于事务A先执行update操作，这个时候会加上间隙锁，也就是id为10的行被加上锁，在事务A提交前，该该行将不能被修改，所以当开启事务B的时候，执行update操作，这个时候事务A还未提交，因此事务B会进入阻塞等待，直到事务A提交，同样因为可重复读，在事务A执行查询操作时，查出来的name是hello，而不是word</p>
+</blockquote>
+<h4 id="当前读存的幻读问题解决方案"><strong>当前读存的幻读问题解决方案</strong></h4>
+<blockquote>
+<p>对查询的数据进行当前读，mysql会对当前读的数据加上间隙锁，这样就不会有新的数据插入，自然也就不会有幻读的问题了.</p>
+</blockquote>
+<p><a href="https://juejin.cn/post/6844903799534911496">mysql的RR隔离级别能解决可重复读吗?</a></p>
+<h4 id="间隙锁">间隙锁</h4>
+<blockquote>
+<p>间隙锁要么锁住索引记录中间的值，要么锁住第一个索引记录前面的值或者最后一个索引记录后面的值，也就是锁住一个范围，它是一种加在两个索引之间的锁，使用间隙锁可以防止其他事务在这个范围内插入或修改记录，保证两次读取这个范围内的记录不会变，从而不会出现幻读现象。。</p>
+</blockquote>
+<h4 id="开启事务">开启事务</h4>
+<p>查询正在执行的事务:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">INNODB_TRX</span> <span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>一开始以为只要执行完begin的时候就会开启事务:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="n">begin</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="n">rows</span> <span class="nf">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>但是这个时候查询正在执行的事务的时候，如图:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">information_schema</span><span class="p">.</span><span class="n">INNODB_TRX</span> <span class="p">;</span>
+<span class="n">Empty</span> <span class="kt">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>也就是说，在仅执行完begin之后并没有开启事务，只有当执行增删改查操作之后才会开启事务</p>
+<h2 id="mysql日志">mysql日志</h2>
+<p><a href="https://developer.aliyun.com/article/781018">日志解释链接</a></p>
+<h4 id="redo-log">redo log</h4>
+<p>作用:<strong>确保事务的持久性</strong>，防止在发生故障的时间点，尚有脏页未写入磁盘，在重启mysql服务的时候，根据redo log进行重做，从而达到事务的持久性这一特性</p>
+<p>内容；物理格式的日志，记录的是物理数据页面的修改的信息，其redo log是顺序写入redo log file的物理文件中去的。</p>
+<p>产生时间：事务开始之后就产生redo log，redo log的落盘并不是随着事务的提交才写入的，而是在事务的执行过程中，便开始写入redo log文件中。</p>
+<p>释放时间：当对应事务的脏页写入到磁盘之后，redo log的使命也就完成了，重做日志占用的空间就可以重用（被覆盖）</p>
+<p>三种方式写入重做文件磁盘</p>
+<blockquote>
+<p>重做日志有一个Innodb_log_buffer缓存，当达到一定的条件后，会将缓存中的日志信息刷新到磁盘里</p>
+</blockquote>
+<ul>
+<li>
+<p>Master Thread 每秒一次执行刷新Innodb_log_buffer到重做日志文件</p>
+</li>
+<li>
+<p>每个事务提交时会将重做日志刷新到重做日志文件</p>
+</li>
+<li>
+<p>当重做日志缓存可用空间 少于一半时，重做日志缓存被刷新到重做日志文件</p>
+<p>因此重做日志的写盘，并不一定是随着事务的提交才写入重做日志文件的，而是随着事务的开始，逐步开始的。
+即使某个事务还没有提交，Innodb存储引擎仍然每秒会将重做日志缓存刷新到重做日志文件。
+这可以很好地解释再大的事务的提交（commit）的时间也是很短暂的。</p>
+</li>
+</ul>
+<h4 id="undo-log">undo log</h4>
+<p>作用：保存了事务发生之前的数据的一个版本，应用于事务回滚，同时可以提供多版本并发控制下的读（MVCC），也即非锁定读，快照读</p>
+<p>内容：逻辑格式的日志，在执行undo的时候，仅仅是将数据从逻辑上恢复至事务之前的状态，而不是从物理页面上操作实现的，这一点是不同于redo log的</p>
+<p>产生时间：事务开始之前，将当前是的版本生成undo log，undo 也会产生 redo 来保证undo log的可靠性</p>
+<p>释放时间：当事务提交之后，undo log并不能立马被删除，
+而是放入待清理的链表，由purge线程判断是否由其他事务在使用undo段中表的上一个事务之前的版本信息，决定是否可以清理undo log的日志空间。</p>
+<h4 id="bin-log">bin log</h4>
+<p>作用：</p>
+<ul>
+<li>用于复制，在主从复制中，从库利用主库上的binlog进行重播，实现主从同步</li>
+<li>用于数据库的基于时间点的还原</li>
+</ul>
+<p>内容：逻辑格式的日志，可以简单认为就是执行过的事务中的sql语句，但又不完全是sql语句这么简单，而是包括了执行的sql语句（增删改）以及反执行sql语句的反向的信息，也就意味着delete对应着delete本身和其反向的insert；update对应着update执行前后的版本的信息；insert对应着delete和insert本身的信息。</p>
+<p>产生时间：事务提交的时候，一次性将事务中的sql语句（一个事物可能对应多个sql语句）按照一定的格式记录到binlog中。这里与redo log很明显的差异就是redo log并不一定是在事务提交的时候刷新到磁盘，redo log是在事务开始之后就开始逐步写入磁盘。因此对于事务的提交，即便是较大的事务，提交（commit）都是很快的，但是在开启了bin_log的情况下，对于较大事务的提交，可能会变得比较慢一些。</p>
+<p>释放时间：事务提交的时候，一次性将事务中的sql语句（一个事物可能对应多个sql语句）按照一定的格式记录到binlog中。这里与redo log很明显的差异就是redo log并不一定是在事务提交的时候刷新到磁盘，redo log是在事务开始之后就开始逐步写入磁盘。因此对于事务的提交，即便是较大的事务，提交（commit）都是很快的，但是在开启了bin_log的情况下，对于较大事务的提交，可能会变得比较慢一些。</p>
+<h4 id="redo-log-与bin-log的区别">redo log 与bin log的区别</h4>
+<ul>
+<li>作用不同：redo log是保证事务的持久性的，是事务层面的，binlog作为还原的功能，是数据库层面的（当然也可以精确到事务层面的），虽然都有还原的意思，但是其保护数据的层次是不一样的。</li>
+<li>内容不同：redo log是物理日志，是数据页面的修改之后的物理记录，binlog是逻辑日志，可以简单认为记录的就是sql语句</li>
+<li>两者日志产生的时间，可以释放的时间，在可释放的情况下清理机制，都是完全不同的</li>
+<li>恢复数据时候的效率，基于物理日志的redo log恢复数据的效率要高于语句逻辑日志的binlog</li>
+</ul>
+<h4 id="两阶段提交">两阶段提交</h4>
+<p>关于事务提交时，redo log和binlog的写入顺序，为了保证主从复制时候的主从一致（当然也包括使用binlog进行基于时间点还原的情况），是要严格一致的，
+MySQL通过两阶段提交过程来完成事务的一致性的，也即redo log和binlog的一致性的，理论上是先写redo log，再写binlog，两个日志都提交成功（刷入磁盘），事务才算真正的完成。</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">bsworld</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-03-12 17:14
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a target="_blank" rel="license noopener" href="https://github.com/nusr/blog/blob/master/LICENSE">MIT</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mysql/">mysql</a>
+          <a href="/tags/traction/">traction</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E6%9C%89%E6%95%88%E7%9A%84%E6%8B%AC%E5%8F%B7/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">有效的括号</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/java%E9%94%81/">
+            <span class="next-text nav-default">Java锁</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="bsworldx@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/abxworld/abxworld.github.io" class="iconfont icon-github" title="github"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">bsworld</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-CN".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-138883536-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

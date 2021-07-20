@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>众数 on CHANGE</title>
+    <link>http://localhost:1313/tags/%E4%BC%97%E6%95%B0/</link>
+    <description>Recent content in 众数 on CHANGE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 08 May 2021 11:39:05 +0800</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/tags/%E4%BC%97%E6%95%B0/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>数组中出现次数超过一半的数字</title>
+      <link>http://localhost:1313/post/%E6%95%B0%E7%BB%84%E4%B8%AD%E5%87%BA%E7%8E%B0%E6%AC%A1%E6%95%B0%E8%B6%85%E8%BF%87%E4%B8%80%E5%8D%8A%E7%9A%84%E6%95%B0%E5%AD%97/</link>
+      <pubDate>Sat, 08 May 2021 11:39:05 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/%E6%95%B0%E7%BB%84%E4%B8%AD%E5%87%BA%E7%8E%B0%E6%AC%A1%E6%95%B0%E8%B6%85%E8%BF%87%E4%B8%80%E5%8D%8A%E7%9A%84%E6%95%B0%E5%AD%97/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

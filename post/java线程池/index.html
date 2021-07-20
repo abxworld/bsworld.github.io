@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>java线程池 - CHANGE</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="bsworld" /><meta name="description" content="" /><meta name="keywords" content="Mac, Github, Vue, React, Front End" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/java%E7%BA%BF%E7%A8%8B%E6%B1%A0/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.651e6917abb0239242daa570c2bec9867267bbcd83646da5a850afe573347b44.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/reset-even.css">
+
+
+<meta property="og:title" content="java线程池" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/java%E7%BA%BF%E7%A8%8B%E6%B1%A0/" />
+<meta property="article:published_time" content="2020-11-09T14:45:41+08:00" />
+<meta property="article:modified_time" content="2020-11-09T14:45:41+08:00" />
+<meta itemprop="name" content="java线程池">
+<meta itemprop="description" content="">
+<meta itemprop="datePublished" content="2020-11-09T14:45:41+08:00" />
+<meta itemprop="dateModified" content="2020-11-09T14:45:41+08:00" />
+<meta itemprop="wordCount" content="1572">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="java线程池"/>
+<meta name="twitter:description" content=""/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">CHANGE</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于我</li>
+      </a><a href="https://github.com/abxworld/abxworld.github.io">
+        <li class="mobile-menu-item">阅读清单</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">CHANGE</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于我</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/abxworld/abxworld.github.io">阅读清单</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">java线程池</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2020-11-09 14:45 </span>
+        
+          <span class="more-meta"> 约 1572 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    
+    <div class="post-content">
+      <p><a href="https://www.cnblogs.com/aspirant/p/6920418.html">参考链接</a></p>
+<h2 id="一executors提供的四种类型的线程池">一、Executors提供的四种类型的线程池</h2>
+<ol>
+<li>
+<p><strong>newSingleThreadExecutor</strong></p>
+<ul>
+<li>
+<p>创建一个单线程的线程池</p>
+</li>
+<li>
+<p>这个线程池只有一个线程在工作,也就是相当于单线程串行执行所有任务</p>
+</li>
+<li>
+<p>如果这个唯一的线程因为异常结束，那么会有一个新的线程来替代它。</p>
+</li>
+<li>
+<p>此线程池保证所有任务的执行顺序按照任务的提交顺序执行</p>
+</li>
+<li>
+<p>**队列类型:**无界队列,LinkedBlockingQueue,capacity为Integer.MAX_VALUE，也就是2的32次方，21亿多，也就是说其实是有边界的即Integer.MAX_VALUE</p>
+</li>
+<li>
+<p><strong>应用场景</strong>:对于需要异步顺序执行的任务，可以提交到单线程线程池里处理，因为只有一个线程可以保证任务执行的顺序行</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>newFixedThreadPool</strong></p>
+<ul>
+<li>创建固定大小的线程池。</li>
+<li>每次提交一个任务就创建一个线程，直到线程达到线程池的最大大小。</li>
+<li>线程池的大小一旦达到最大值就会保持不变</li>
+<li>如果某个线程因为执行异常而结束，那么线程池会补充一个新线程。</li>
+<li>队列类型:同<strong>LinkedBlockingQueue</strong></li>
+<li>应用场景:处理计算密集型的任务，可以控制并行线程的数量，保证处理的线程数是一定的</li>
+</ul>
+</li>
+<li>
+<p><strong>newCachedThreadPool</strong></p>
+<ul>
+<li>
+<p>创建一个可缓存的线程池。</p>
+</li>
+<li>
+<p>如果线程池的大小超过了处理任务所需要的线程，那么就会回收部分空闲（60秒不执行任务）的线程，当任务数增加时，此线程池又可以<a href="http://lib.csdn.net/base/aiplanning">智能</a>的添加新线程来处理任务。</p>
+</li>
+<li>
+<p>此线程池不会对线程池大小做限制，线程池大小完全依赖于<a href="http://lib.csdn.net/base/operatingsystem">操作系统</a>（或者说JVM）能够创建的最大线程大小。</p>
+</li>
+<li>
+<p>队列类型:<strong>SynchronousQueue</strong>,</p>
+<p>调用put方法添加元素时,如果没有移除的则会一直阻塞，</p>
+<p>调用take方法移除时,如果没有添加会阻塞</p>
+<p>线程池调用的是offer()添加的元素，并且没有等待时间，所以如果没有空余线程在等待着poll()那么，就会添加失败，这个时候就会起新的线程来执行这个任务</p>
+</li>
+<li>
+<p>应用场景:对于需要实时性要求比较高的任务，如果没有线程处理，可以及时启动新的线程去处理任务，并且对于已经执行完任务的线程，可以实现有效的复用</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>newScheduledThreadPool</strong></p>
+<ul>
+<li>创建一个大小无限的线程池。</li>
+<li>此线程池支持定时以及周期性执行任务的需求。</li>
+<li>队列类型:DelayedWorkQueue，延迟队列</li>
+</ul>
+</li>
+</ol>
+<h2 id="二线程池运行顺序流程">二、线程池运行顺序流程</h2>
+<p>​			<img src="/java%E7%BA%BF%E7%A8%8B%E6%B1%A0/threadpool_proceess.png" alt="线程池运行流程图"></p>
+<h2 id="三各个线程池的实现原理">三、各个线程池的实现原理</h2>
+<ol>
+<li>
+<p>newSingleThreadExecutor</p>
+</li>
+<li>
+<p>newFixedThreadPool</p>
+</li>
+<li>
+<p>newCachedThreadPool</p>
+<p>提交任务代码:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"> <span class="kd">public</span> <span class="kt">void</span> <span class="nf">execute</span><span class="o">(</span><span class="n">Runnable</span> <span class="n">command</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">command</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">NullPointerException</span><span class="o">();</span>
+        <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="n">ctl</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">workerCountOf</span><span class="o">(</span><span class="n">c</span><span class="o">)</span> <span class="o">&lt;</span> <span class="n">corePoolSize</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">addWorker</span><span class="o">(</span><span class="n">command</span><span class="o">,</span> <span class="kc">true</span><span class="o">))</span>
+                <span class="k">return</span><span class="o">;</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">ctl</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">isRunning</span><span class="o">(</span><span class="n">c</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">workQueue</span><span class="o">.</span><span class="na">offer</span><span class="o">(</span><span class="n">command</span><span class="o">))</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">recheck</span> <span class="o">=</span> <span class="n">ctl</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(!</span> <span class="n">isRunning</span><span class="o">(</span><span class="n">recheck</span><span class="o">)</span> <span class="o">&amp;&amp;</span> <span class="n">remove</span><span class="o">(</span><span class="n">command</span><span class="o">))</span>
+                <span class="n">reject</span><span class="o">(</span><span class="n">command</span><span class="o">);</span>
+            <span class="k">else</span> <span class="k">if</span> <span class="o">(</span><span class="n">workerCountOf</span><span class="o">(</span><span class="n">recheck</span><span class="o">)</span> <span class="o">==</span> <span class="n">0</span><span class="o">)</span>
+                <span class="n">addWorker</span><span class="o">(</span><span class="kc">null</span><span class="o">,</span> <span class="kc">false</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="o">(!</span><span class="n">addWorker</span><span class="o">(</span><span class="n">command</span><span class="o">,</span> <span class="kc">false</span><span class="o">))</span>
+            <span class="n">reject</span><span class="o">(</span><span class="n">command</span><span class="o">);</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>因为newScheduledThreadPool使用的队列是SynchronousQueue,</p>
+<p>当执行 workQueue.offer(command)时，因为offer是没有加超时时间的，现在分两种情况</p>
+<ul>
+<li>当线程池中没有空余线程的时候，这个时候offer操作会立即返回，接着在线程池有效的情况下，会执行 addWorker(null, false)，会添加新的线程</li>
+<li>当线程池有空余的线程的时候，offer放入的任务，会被之前的线程获取执行，也就是实现了线程的复用</li>
+<li>优点:</li>
+<li>缺点:由于线程池的maxPoolSize是Integer.MAX_VALUE，理论上，当没有线程池中没有空余线程执行新添加的任务的时候，就会创建一个新的线程，可能会导致OOM</li>
+</ul>
+</blockquote>
+<p>获取执行任务方法:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"> <span class="kd">private</span> <span class="n">Runnable</span> <span class="nf">getTask</span><span class="o">()</span> <span class="o">{</span>
+        <span class="kt">boolean</span> <span class="n">timedOut</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span> <span class="c1">// Did the last poll() time out?
+</span><span class="c1"></span>   
+        <span class="k">for</span> <span class="o">(;;)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">c</span> <span class="o">=</span> <span class="n">ctl</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+            <span class="kt">int</span> <span class="n">rs</span> <span class="o">=</span> <span class="n">runStateOf</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+   
+            <span class="c1">// Check if queue empty only if necessary.
+</span><span class="c1"></span>            <span class="k">if</span> <span class="o">(</span><span class="n">rs</span> <span class="o">&gt;=</span> <span class="n">SHUTDOWN</span> <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">rs</span> <span class="o">&gt;=</span> <span class="n">STOP</span> <span class="o">||</span> <span class="n">workQueue</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()))</span> <span class="o">{</span>
+                <span class="n">decrementWorkerCount</span><span class="o">();</span>
+                <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+            <span class="o">}</span>
+   
+            <span class="kt">int</span> <span class="n">wc</span> <span class="o">=</span> <span class="n">workerCountOf</span><span class="o">(</span><span class="n">c</span><span class="o">);</span>
+   
+            <span class="c1">// Are workers subject to culling?
+</span><span class="c1"></span>            <span class="kt">boolean</span> <span class="n">timed</span> <span class="o">=</span> <span class="n">allowCoreThreadTimeOut</span> <span class="o">||</span> <span class="n">wc</span> <span class="o">&gt;</span> <span class="n">corePoolSize</span><span class="o">;</span>
+   
+            <span class="k">if</span> <span class="o">((</span><span class="n">wc</span> <span class="o">&gt;</span> <span class="n">maximumPoolSize</span> <span class="o">||</span> <span class="o">(</span><span class="n">timed</span> <span class="o">&amp;&amp;</span> <span class="n">timedOut</span><span class="o">))</span>
+                <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">wc</span> <span class="o">&gt;</span> <span class="n">1</span> <span class="o">||</span> <span class="n">workQueue</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">()))</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">compareAndDecrementWorkerCount</span><span class="o">(</span><span class="n">c</span><span class="o">))</span>
+                    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+                <span class="k">continue</span><span class="o">;</span>
+            <span class="o">}</span>
+   
+            <span class="k">try</span> <span class="o">{</span>
+                <span class="n">Runnable</span> <span class="n">r</span> <span class="o">=</span> <span class="n">timed</span> <span class="o">?</span>
+                    <span class="n">workQueue</span><span class="o">.</span><span class="na">poll</span><span class="o">(</span><span class="n">keepAliveTime</span><span class="o">,</span> <span class="n">TimeUnit</span><span class="o">.</span><span class="na">NANOSECONDS</span><span class="o">)</span> <span class="o">:</span>
+                    <span class="n">workQueue</span><span class="o">.</span><span class="na">take</span><span class="o">();</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">r</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span>
+                    <span class="k">return</span> <span class="n">r</span><span class="o">;</span>
+                <span class="n">timedOut</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="n">InterruptedException</span> <span class="n">retry</span><span class="o">)</span> <span class="o">{</span>
+                <span class="n">timedOut</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>newScheduledThreadPool</p>
+</li>
+</ol>
+<h2 id="四阻塞队列的常用方法">四、阻塞队列的常用方法</h2>
+<ol>
+<li>put与take
+<ul>
+<li>阻塞式放入与获取</li>
+<li>可中断</li>
+</ul>
+</li>
+<li>offer与poll
+<ul>
+<li>非阻塞式放入与获取，当队列满时，offer会立即返回，放入失败，返回false，当队列空时,poll失败，返回空</li>
+<li>offer与poll可以指定超时时间，在超时时间内如果添加或则获取成功，则成功</li>
+</ul>
+</li>
+</ol>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">bsworld</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2020-11-09 14:45
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a target="_blank" rel="license noopener" href="https://github.com/nusr/blog/blob/master/LICENSE">MIT</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E6%9C%BA%E5%99%A8%E4%BA%BA%E8%83%BD%E5%90%A6%E8%BF%94%E5%9B%9E%E5%8E%9F%E7%82%B9/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">机器人能否返回原点</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/x%E7%9A%84%E5%B9%B3%E6%96%B9%E6%A0%B9/">
+            <span class="next-text nav-default">X的平方根</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="bsworldx@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/abxworld/abxworld.github.io" class="iconfont icon-github" title="github"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">bsworld</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-CN".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-138883536-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

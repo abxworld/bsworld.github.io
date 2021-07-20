@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>mysql索引 - CHANGE</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="bsworld" /><meta name="description" content="" /><meta name="keywords" content="Mac, Github, Vue, React, Front End" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/mysql%E7%B4%A2%E5%BC%95/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.651e6917abb0239242daa570c2bec9867267bbcd83646da5a850afe573347b44.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/reset-even.css">
+
+
+<meta property="og:title" content="mysql索引" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/mysql%E7%B4%A2%E5%BC%95/" />
+<meta property="article:published_time" content="2021-03-15T16:16:39+08:00" />
+<meta property="article:modified_time" content="2021-03-15T16:16:39+08:00" />
+<meta itemprop="name" content="mysql索引">
+<meta itemprop="description" content="">
+<meta itemprop="datePublished" content="2021-03-15T16:16:39+08:00" />
+<meta itemprop="dateModified" content="2021-03-15T16:16:39+08:00" />
+<meta itemprop="wordCount" content="4149">
+
+
+
+<meta itemprop="keywords" content="mysql,索引," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="mysql索引"/>
+<meta name="twitter:description" content=""/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">CHANGE</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于我</li>
+      </a><a href="https://github.com/abxworld/abxworld.github.io">
+        <li class="mobile-menu-item">阅读清单</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">CHANGE</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于我</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/abxworld/abxworld.github.io">阅读清单</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">mysql索引</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-15 16:16 </span>
+        <div class="post-category">
+            <a href="/categories/mysql/"> mysql </a>
+            </div>
+          <span class="more-meta"> 约 4149 字 </span>
+          <span class="more-meta"> 预计阅读 9 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    
+    <div class="post-content">
+      <p><a href="https://cloud.tencent.com/developer/article/1004912">mysql索引及优化总结</a></p>
+<h2 id="一索引的基本概念及分类">一、索引的基本概念及分类</h2>
+<ul>
+<li>
+<p>聚簇索引(主键索引):包含主键索引和对应的实际数据，索引的叶子节点就是数据节点</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">table_name</span> <span class="k">ADD</span> <span class="k">INDEX</span> <span class="nf">index_name</span> <span class="p">(</span><span class="k">column</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>唯一索引列的值必须唯一，但允许有空值。如果是组合索引，则列值的组合必须唯一</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">table_name</span> <span class="k">ADD</span> <span class="k">UNIQUE</span> <span class="p">(</span><span class="k">column</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>普通索引：这是最基本的索引，它没有任何限制</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">table_name</span> <span class="k">ADD</span> <span class="k">INDEX</span> <span class="nf">index_name</span> <span class="p">(</span><span class="k">column</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p><strong>组合索引 INDEX</strong>：组合索引，即一个索引包含多个列。可以在创建表的时候指定，也可以修改表结构，如：</p>
+</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">ALTER</span> <span class="k">TABLE</span> <span class="n">table_name</span> <span class="k">ADD</span> <span class="k">INDEX</span> <span class="nf">index_name</span><span class="p">(</span><span class="n">column1</span><span class="p">,</span> <span class="n">column2</span><span class="p">,</span> <span class="n">column3</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><ul>
+<li><strong>全文索引 FULLTEXT</strong></li>
+</ul>
+<p>全文索引（也称全文检索）是目前搜索引擎使用的一种关键技术。它能够利用分词技术等多种算法智能分析出文本文字中关键字词的频率及重要性，然后按照一定的算法规则智能地筛选出我们想要的搜索结果。</p>
+<p>可以在创建表的时候指定，也可以修改表结构，如：</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">ALTER</span> <span class="k">TABLE</span> <span class="o">`</span><span class="n">table_name</span><span class="o">`</span> <span class="k">ADD</span> <span class="k">FULLTEXT</span> <span class="p">(</span><span class="o">`</span><span class="k">column</span><span class="o">`</span><span class="p">)</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><img src="/mysql%E7%B4%A2%E5%BC%95/mysql%E7%B4%A2%E5%BC%95%E6%9F%A5%E6%89%BE%E8%BF%87%E7%A8%8B-5874097.png" alt="mysql索引查找过程"></p>
+<!-- raw HTML omitted -->
+<p>比如说user_info表中，根据name(name建立了普通索引)查询相关的数据，sql为:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">user_info</span> <span class="k">where</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;adfty&#39;</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>那么查询流程是:</p>
+<p>根据查询的字段找到相关的字段索引文件(或缓存)-&gt;根据字段的值(adfty)找到该值在索引树中的位置-&gt;找到相关联的叶子节点-&gt;叶子节点存储的是主键id-&gt;根据主键查询聚簇索引-&gt;找到具体的叶子节点，叶子节点中存储的就是每一行的数据。</p>
+<h2 id="二b数与b数">二、B数与B+数</h2>
+<p><a href="https://draveness.me/whys-the-design-mysql-b-plus-tree/">mysql使用B树的原因</a></p>
+<p><a href="https://segmentfault.com/a/1190000021488885">原因2</a></p>
+<h2 id="三索引优化">三、索引优化</h2>
+<h4 id="性质">性质</h4>
+<ul>
+<li>
+<p>索引字段要尽量的小。</p>
+<p>通过上面b+树的查找过程，或者通过真实的数据存在于叶子节点这个事实可知，IO次数取决于b+数的高度h。</p>
+<p>假设当前数据表的数据量为N，每个磁盘块的数据项的数量是m，则树高h=㏒(m+1)N，当数据量N一定的情况下，m越大，h越小；</p>
+<p>而m = 磁盘块的大小/数据项的大小，磁盘块的大小也就是一个数据页的大小，是固定的；如果数据项占的空间越小，数据项的数量m越多，树的高度h越低。这就是为什么每个数据项，即索引字段要尽量的小，比如int占4字节，要比bigint8字节少一半。</p>
+</li>
+<li>
+<p>索引的最左匹配特性。</p>
+<p>当b+树的数据项是复合的数据结构，比如(name,age,sex)的时候，b+数是按照从左到右的顺序来建立搜索树的，比如当(张三,20,F)这样的数据来检索的时候，b+树会优先比较name来确定下一步的所搜方向，如果name相同再依次比较age和sex，最后得到检索的数据；但当(20,F)这样的没有name的数据来的时候，b+树就不知道下一步该查哪个节点，因为建立搜索树的时候name就是第一个比较因子，必须要先根据name来搜索才能知道下一步去哪里查询。比如当(张三,F)这样的数据来检索时，b+树可以用name来指定搜索方向，但下一个字段age的缺失，所以只能把名字等于张三的数据都找到，然后再匹配性别是F的数据了， 这个是非常重要的性质，即索引的最左匹配特性。</p>
+</li>
+</ul>
+<h4 id="建立索引的原则">建立索引的原则</h4>
+<ul>
+<li>
+<p>最左前缀匹配原则</p>
+<p>对于多列索引，总是从索引的最前面字段开始，接着往后，中间不能跳过。比如创建了多列索引(name,age,sex)，会先匹配name字段，再匹配age字段，再匹配sex字段的，中间不能跳过。mysql会一直向右匹配直到遇到范围查询(&gt;、&lt;、between、like)就停止匹配。</p>
+<p><strong>一般，在创建多列索引时，where子句中使用最频繁的一列放在最左边。</strong></p>
+</li>
+<li>
+<p>尽量选择区分度高的列作为索引。</p>
+</li>
+</ul>
+<p>比如，我们会选择学号做索引，而不会选择性别来做索引，类似性别只有两个值，查询的过程也与全表扫描没有区别了</p>
+<ul>
+<li>
+<p>=和in可以乱序</p>
+<p>比如建立(a,b,c)索引，既可以a = 1 and b = 2 and c = 3，也可以写成 b= 2 and a= 1 and c = 3，mysql的查询优化器会帮你优化成索引可以识别的形式。</p>
+</li>
+<li>
+<p>索引列不能参与计算，保持列“干净”</p>
+<p>比如：Flistid+1&gt;‘2000000608201108010831508721‘。原因很简单，假如索引列参与计算的话，那每次检索时，都会先将索引计算一次，再做比较，显然成本太大。</p>
+</li>
+<li>
+<p>尽量的扩展索引，不要新建索引。</p>
+<p>比如表中已经有a的索引，现在要加(a,b)的索引，那么只需要修改原来的索引即可。</p>
+</li>
+</ul>
+<h4 id="索引的不足"><strong>索引的不足</strong></h4>
+<p>虽然索引可以提高查询效率，但索引也有自己的不足之处。</p>
+<p>索引的额外开销：</p>
+<ul>
+<li>空间：索引需要占用空间</li>
+<li>时间：查询索引需要时间</li>
+<li>维护：索引须要维护（数据变更时</li>
+</ul>
+<p>不建议使用索引的情况</p>
+<ul>
+<li>数据量很小的表</li>
+<li>区分度不高的字段</li>
+<li>空间紧张</li>
+</ul>
+<h4 id="常用优化总结">常用优化总结</h4>
+<ul>
+<li>
+<h4 id="有索引但未被用到的情况">有索引但未被用到的情况</h4>
+<ul>
+<li>Like的参数以通配符开头时</li>
+</ul>
+<p>尽量避免Like的参数以通配符开头，否则数据库引擎会放弃使用索引而进行全表扫描。</p>
+<p>以通配符开头的sql语句，例如：select * from t_credit_detail where Flistid like &lsquo;%0&rsquo;\G，这样会导致权标扫描</p>
+<ul>
+<li>
+<p>where条件不符合最左前缀原则</p>
+</li>
+<li>
+<p>使用！= 或 &lt;&gt; 操作符时</p>
+<p>尽量避免使用！= 或 &lt;&gt;操作符，否则数据库引擎会放弃使用索引而进行全表扫描。使用&gt;或&lt;会比较高效。</p>
+<p>select * from t_credit_detail where Flistid != &lsquo;2000000608201108010831508721&rsquo;\G;</p>
+<p><img src="/mysql%E7%B4%A2%E5%BC%95/image-20210316210721128.png" alt="image-20210316210721128"></p>
+</li>
+<li>
+<p>索引列参与计算</p>
+<p>应尽量避免在 where 子句中对字段进行表达式操作，这将导致引擎放弃使用索引而进行全表扫描。</p>
+<p>select * from t_credit_detail where Flistid +1 &gt; &lsquo;2000000608201108010831508722&rsquo;\G;</p>
+<p><img src="/mysql%E7%B4%A2%E5%BC%95/image-20210316210622941.png" alt="image-20210316210622941"></p>
+</li>
+<li>
+<p>对字段进行null值判断</p>
+<p>应尽量避免在where子句中对字段进行null值判断，否则将导致引擎放弃使用索引而进行全表扫描，如： 低效：select * from t_credit_detail where Flistid is null ;</p>
+<p>可以在Flistid上设置默认值0，确保表中Flistid列没有null值，然后这样查询： 高效：select * from t_credit_detail where Flistid =0;</p>
+</li>
+<li>
+<p>使用or来连接条件</p>
+<p>应尽量避免在where子句中使用or来连接条件，否则将导致引擎放弃使用索引而进行全表扫描，如： 低效：select * from t_credit_detail where Flistid = &lsquo;2000000608201108010831508721&rsquo; or Flistid = &lsquo;10000200001&rsquo;;</p>
+<p>可以用下面这样的查询代替上面的 or 查询： 高效：select <em>from t_credit_detail where Flistid = &lsquo;2000000608201108010831508721&rsquo; union all select</em> from t_credit_detail where Flistid = &lsquo;10000200001&rsquo;;</p>
+</li>
+</ul>
+</li>
+<li>
+<p>避免使用select *</p>
+<p>如果使用*查询，那么即使有些不被用到的数据也被取出来了，应该按需取对应的字段</p>
+</li>
+<li>
+<p>order by 语句优化</p>
+<p>对非索引列进行order by排序，会降低查询速度</p>
+<ul>
+<li>重写order by语句，让order by能使用上索引</li>
+<li>对相关排序字段加上索引</li>
+<li>避免在order by语句中进行表达式，计算等</li>
+</ul>
+</li>
+<li>
+<p>group by语句优化
+提高GROUP BY 语句的效率, 可以通过将不需要的记录在GROUP BY 之前过滤掉</p>
+<p>低效:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="n">job</span> <span class="p">,</span> <span class="nf">avg</span><span class="p">(</span><span class="n">sal</span><span class="p">)</span> <span class="k">from</span> <span class="n">emp</span> <span class="k">group</span> <span class="k">by</span> <span class="n">job</span> <span class="k">having</span> <span class="n">job</span><span class="o">=</span><span class="s1">&#39;president&#39;</span> <span class="k">or</span> <span class="n">job</span> <span class="o">=</span> <span class="s1">&#39;manager&#39;</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>高效:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="n">job</span> <span class="p">,</span> <span class="nf">avg</span><span class="p">(</span><span class="n">sal</span><span class="p">)</span> <span class="k">from</span> <span class="n">emp</span> <span class="k">where</span> <span class="n">job</span> <span class="o">=</span> <span class="err">‘</span><span class="n">president</span><span class="s1">&#39; or job = ‘manager&#39;</span> <span class="k">group</span> <span class="k">by</span> <span class="n">job</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>使用 varchar/nvarchar 代替 char/nchar</p>
+<p>尽可能的使用 varchar/nvarchar 代替 char/nchar ，因为首先变长字段存储空间小，可以节省存储空间，其次对于查询来说，在一个相对较小的字段内搜索效率显然要高些。</p>
+</li>
+<li>
+<p>能用DISTINCT的就不用GROUP BY</p>
+<p>SELECT OrderID FROM Details WHERE UnitPrice &gt; 10 GROUP BY OrderID</p>
+<p>可改为：</p>
+<p>SELECT DISTINCT OrderID FROM Details WHERE UnitPrice &gt; 10</p>
+</li>
+<li>
+<p>能用UNION ALL就不要用UNION</p>
+<p>UNION ALL不执行SELECT DISTINCT函数，这样就会减少很多不必要的资源。</p>
+</li>
+<li>
+<p>在Join表的时候使用相当类型的例，并将其索引</p>
+<p>如果应用程序有很多JOIN 查询，你应该确认两个表中Join的字段是被建过索引的。这样，MySQL内部会启动为你优化Join的SQL语句的机制。</p>
+<p>而且，这些被用来Join的字段，应该是相同的类型的。例如：如果你要把 DECIMAL 字段和一个 INT 字段Join在一起，MySQL就无法使用它们的索引。对于那些STRING类型，还需要有相同的字符集才行。（两个表的字符集有可能不一样）</p>
+</li>
+</ul>
+<h2 id="四limit分页优化">四、limit分页优化</h2>
+<h4 id="背景">背景</h4>
+<p>mysql在进行分页查询的时候，如果分页页数比较小的情况下是比较快的，但是页数越大查询效率也就变得越低，耗时也就越长</p>
+<h4 id="分页原理">分页原理</h4>
+<p>当我们进行分页查询的时候，如果一个表很大的话，通常写出的sql语句可能是这样的:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">user_info</span> <span class="k">where</span> <span class="n">name</span> <span class="o">=</span> <span class="n">xxx</span> <span class="k">limit</span> <span class="mi">100000</span><span class="p">,</span> <span class="mi">20</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>当执行这个sql时，mysql执行的操作是:</p>
+<ul>
+<li>
+<p>mysql将查询出1000020条name对应的主键id，然后这100020条记录再通过随机io的方式查询主表</p>
+</li>
+<li>
+<p>然后舍掉前面的1000000条记录</p>
+</li>
+<li>
+<p>返回剩下的20条记录</p>
+<p>通过随机io的方式查询主表，进行了大量不必要的查询，这样查询下来效率肯定就比较低了</p>
+</li>
+</ul>
+<h4 id="问题解决">问题解决</h4>
+<ul>
+<li>
+<p>根据业务实际需求，看能否替换为下一页，上一页的功能，每次返回一个最大主键id给前端，当下次查询时再根据最大id去分页查询，如果中间有过滤条件可以多查询几页，以备过筛选用</p>
+</li>
+<li>
+<p>采用覆盖索引加上子查询的方式</p>
+<p>覆盖索引(索引覆盖):即从非主键索引中就能查到的记录，而不需要查询主键索引中的记录，避免了回表的产生减少了树的搜索次数，显著提升性能。</p>
+<p>如:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="n">id</span> <span class="k">from</span> <span class="n">user_info</span> <span class="k">where</span> <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;adfty&#39;</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>这样通过图一中的左图，就能查找到id为12，不需要再回主表进行查询，那么我们可以通过先查询覆盖索引，并且进行分页，然后用分页后的id再去主表查询，这样就能避免多次无效的IO查询</p>
+<p>sql示例如下</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">user_info</span> <span class="n">a</span> <span class="k">inner</span> <span class="k">join</span> <span class="p">(</span><span class="k">select</span> <span class="n">id</span> <span class="k">from</span> <span class="n">user_info</span> <span class="k">where</span> <span class="n">name</span> <span class="o">=</span> <span class="n">xxx</span> <span class="k">limit</span> <span class="n">m</span><span class="p">,</span><span class="n">n</span> <span class="p">)</span> <span class="n">b</span> <span class="k">where</span> <span class="n">a</span><span class="p">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">b</span><span class="p">.</span><span class="n">id</span><span class="p">;</span>
+</code></pre></td></tr></table>
+</div>
+</div><blockquote>
+<p>xxx为需要查询的name的值</p>
+<p>m，n为偏移量</p>
+</blockquote>
+<p>可以用<strong>嵌套子查询</strong>的方式吗?比如说写成:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">select</span> <span class="o">*</span> <span class="k">from</span> <span class="n">user_info</span> <span class="k">where</span> <span class="n">id</span> <span class="k">in</span> <span class="p">(</span><span class="k">select</span> <span class="n">id</span> <span class="k">from</span> <span class="n">user_info</span> <span class="k">where</span> <span class="n">name</span> <span class="o">=</span> <span class="n">xxx</span> <span class="k">limit</span> <span class="n">m</span><span class="p">,</span><span class="n">n</span> <span class="p">);</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>答案是不可以，因为在子查询中不能使用limit</p>
+</li>
+</ul>
+<h2 id="五b树与b的区别">五、B+树与B的区别</h2>
+<ul>
+<li>B树在叶子节点和非叶子节点都会存储数据，导致每页存储的索引量变少，树的层次变高，IO次数增加，耗时也就增加了</li>
+<li>B+数在叶子节点维护了一个链表，每个叶子节点会指向下一个叶子节点，这样极大地方便了范围查询，而B数则没有维护，所以在执行范围查询的时候会增加随机IO的次数</li>
+<li>B+数由于数据都存储在叶子节点，所以查询数据的耗时一般是平均的，而B树由于在非叶子节点也存储数据，那么查询数据的耗时就有可能有的高有的低</li>
+</ul>
+<h2 id="六一棵b树可以存储多少数据">六、一棵B+树可以存储多少数据</h2>
+<p><a href="https://zhuanlan.zhihu.com/p/268818605">B+数存储数据分析</a></p>
+<p><img src="/mysql%E7%B4%A2%E5%BC%95/image-20210511181010212.png" alt="image-20210511181010212"></p>
+<p>Page(number=3)是根页，根页存储的是指针和主键ID，innoDB每页的大小是16kb，每个指针的大小是6kb，每个指针都对应下一层的一页，假如主键id是bigint，也就是8字节，那么在根页中就可以存储  16 * 1024 / (6 + 8) = 1170 个指针，也就对应下一层的1170页，再假如一行的数据占用空间时1kb，那么一页也就最多可以存储16行数据</p>
+<p>所以B+树在只有两层的情况下，可以存储的数据行数是 1170 * 16 = 18720 行，同理B+树有三层，那么就是 1170 * 1170 * 16 = 21902400，大约2000万条数据</p>
+<p>所以在InnoDB中B+树高度一般为1-3层，这就能满足千万级的数据存储。在查找数据时，一次页的查找代表一次IO，所以通过主键索引查询通常只需要1-3次IO操作即可查到数据</p>
+<p>当层数增加到4层的时候，IO的次数就更多了，性能也就会变差</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">bsworld</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-03-15 16:16
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a target="_blank" rel="license noopener" href="https://github.com/nusr/blog/blob/master/LICENSE">MIT</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mysql/">mysql</a>
+          <a href="/tags/%E7%B4%A2%E5%BC%95/">索引</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E5%9B%9E%E6%96%87%E5%AD%97%E7%AC%A6%E4%B8%B2/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">回文字符串</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E9%93%BE%E8%A1%A8%E4%B8%AD%E5%80%92%E6%95%B0%E7%AC%ACK%E4%B8%AA%E8%8A%82%E7%82%B9/">
+            <span class="next-text nav-default">链表中倒数第K个节点</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="bsworldx@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/abxworld/abxworld.github.io" class="iconfont icon-github" title="github"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">bsworld</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-CN".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-138883536-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

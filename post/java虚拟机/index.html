@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Java虚拟机 - CHANGE</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="bsworld" /><meta name="description" content="" /><meta name="keywords" content="Mac, Github, Vue, React, Front End" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/java%E8%99%9A%E6%8B%9F%E6%9C%BA/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.651e6917abb0239242daa570c2bec9867267bbcd83646da5a850afe573347b44.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/reset-even.css">
+
+
+<meta property="og:title" content="Java虚拟机" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/java%E8%99%9A%E6%8B%9F%E6%9C%BA/" />
+<meta property="article:published_time" content="2021-03-09T14:45:47+08:00" />
+<meta property="article:modified_time" content="2021-03-09T14:45:47+08:00" />
+<meta itemprop="name" content="Java虚拟机">
+<meta itemprop="description" content="">
+<meta itemprop="datePublished" content="2021-03-09T14:45:47+08:00" />
+<meta itemprop="dateModified" content="2021-03-09T14:45:47+08:00" />
+<meta itemprop="wordCount" content="1592">
+
+
+
+<meta itemprop="keywords" content="jvm," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java虚拟机"/>
+<meta name="twitter:description" content=""/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">CHANGE</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于我</li>
+      </a><a href="https://github.com/abxworld/abxworld.github.io">
+        <li class="mobile-menu-item">阅读清单</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">CHANGE</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于我</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/abxworld/abxworld.github.io">阅读清单</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Java虚拟机</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-09 14:45 </span>
+        <div class="post-category">
+            <a href="/categories/jvm/"> jvm </a>
+            </div>
+          <span class="more-meta"> 约 1592 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    
+    <div class="post-content">
+      <h2 id="一垃圾回收算法">一、垃圾回收算法</h2>
+<p>1、标记清除算法:</p>
+<p>2、标记复制算法</p>
+<p>3、标记整理算法</p>
+<h2 id="二垃圾收集器">二、垃圾收集器</h2>
+<h4 id="1新生代的收集器包括">1、新生代的收集器包括</h4>
+<ul>
+<li>Serial</li>
+<li>PraNew</li>
+<li>Parallel Scavenge</li>
+</ul>
+<h4 id="2老年代的收集器包括">2、老年代的收集器包括</h4>
+<p>1）Serial Old</p>
+<p>2）Parallel Old</p>
+<p>3）CMS</p>
+<ul>
+<li>算法:标记清除算法，可以设置执行一定次数后开启内存压缩也就是对内存整理即标记-整理算法</li>
+<li>ParNew收集器是激活CMS后（使用-XX：+UseConcMarkSweepGC选项）的默 认新生代收集器，也可以使用-XX：+/-UseParNewGC选项来强制指定或者禁用它。</li>
+<li>可以搭配Serial，PraNew垃圾回收器使用</li>
+</ul>
+<h4 id="3回收整个java堆新生代和老年代">3、回收整个Java堆(新生代和老年代)</h4>
+<ol>
+<li>
+<p>G1收集</p>
+<ul>
+<li>
+<p>为什么能实现在用户定义的时间内实现垃圾回收?</p>
+<blockquote>
+<p><strong>G1回收它是“选择一些内存块”，而不是整代内存来回收，这是G1跟其它GC非常不同的一点，其它GC每次回收都会回收整个Generation的内存(Eden, Old), 而回收内存所需的时间就取决于内存的大小，以及实际垃圾的多少，所以垃圾回收时间是不可控的；而G1每次并不会回收整代内存，到底回收多少内存就看用户配置的暂停时间，配置的时间短就少回收点，配置的时间长就多回收点，伸缩自如</strong></p>
+</blockquote>
+</li>
+<li>
+<p>优势</p>
+<blockquote>
+<ul>
+<li>内存被分成了很多小块，又带来了另外好处，由于内存块比较小，进行内存压缩整理的代价都比较小，相比其它GC算法，可以有效的规避内存碎片的问题</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>缺点</p>
+<blockquote>
+<ul>
+<li>如果应用的内存非常吃紧，对内存进行部分回收根本不够，始终要进行整个Heap的回收，那么G1要做的工作量就一点也不会比其它垃圾回收器少，而且因为本身算法复杂了一点，可能比其它回收器还要差。因此G1比较适合内存稍大一点的应用(一般来说至少4G以上)，小内存的应用还是用传统的垃圾回收器比如CMS比较合适。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p>总结</p>
+<blockquote>
+<p>G1通过在垃圾回收领域应用并行化的策略，把几块大内存块的回收问题，变成了几百块小内存的回收问题，使得回收算法可以高度并行化，同时也因为分成很多小块，使得垃圾回收的单位变成了小块内存，而不是整代内存，使得用户可能对回收时间进行配置，垃圾回收变得可以预期了。</p>
+<p>分而治之、化整为零这些朴素的架构思想往往是很多牛叉技术产品背后的思想根源啊。</p>
+</blockquote>
+</li>
+</ol>
+<p>​</p>
+<ol start="2">
+<li></li>
+</ol>
+<h2 id="三java内存模型">三、java内存模型</h2>
+<h4 id="1主内存与工作内存">1、主内存与工作内存</h4>
+<h2 id="2volatile关键字">2、volatile关键字</h2>
+<ul>
+<li>
+<p><strong>保证线程间的可见性，但不能保证并发原子性</strong></p>
+<ol>
+<li>
+<p>如多线程对变量i执行i++操作，首先不同的线程从主内存读取i的值，然后执行 i=i+1的操作，然后再写入主内存，即使变量 i 被volatile关键字修饰，但是如果不同的线程从主内存读取相同的i值，再执行加1回写操作，在原子操作情况下应该是 i  变为 i+2，但是这个时候还是 i 等于 i + 1，也就是说volatile并不能保证并发操作的安全性</p>
+</li>
+<li>
+<p>应用示例，作为应用程序中的开关</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span><span class="o">{</span>
+   <span class="kd">private</span> <span class="kd">volatile</span> <span class="kt">boolean</span> <span class="n">flag</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
+       
+  <span class="kd">public</span> <span class="kt">void</span> <span class="nf">shut</span><span class="o">(){</span>
+    <span class="k">while</span><span class="o">(!</span><span class="n">flag</span><span class="o">){</span>
+      <span class="n">doSomething</span><span class="o">();</span>
+    <span class="o">}</span>
+  <span class="o">}</span>
+  <span class="n">publid</span> <span class="kt">void</span> <span class="nf">doSomething</span><span class="o">(){</span>
+    <span class="c1">//.....
+</span><span class="c1"></span>  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>A线程会轮询该flag的值，如果B线程将flag改为false的时候，调用doSomething方法，这个时候就要求立即知道flag的最新值，执行其他的操作，加上volatile会强制B线程将flag的值写入主内存，并强制A线程从主内存里读取flag的值</p>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>禁止指令重排序</strong></p>
+<p>以双重检查锁为例，以下是懒汉式双重检查锁代码:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Singleton</span> <span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">volatile</span> <span class="kd">static</span> <span class="n">Singleton</span> <span class="n">instance</span><span class="o">;</span> <span class="c1">//声明成 volatile
+</span><span class="c1"></span>    <span class="kd">private</span> <span class="nf">Singleton</span> <span class="o">(){}</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="n">Singleton</span> <span class="nf">getSingleton</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">instance</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>                         
+            <span class="kd">synchronized</span> <span class="o">(</span><span class="n">Singleton</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">if</span> <span class="o">(</span><span class="n">instance</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>       
+                    <span class="n">instance</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Singleton</span><span class="o">();</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">instance</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>instance = new Singleton();</p>
+<p>新new一个对象分为以下三步:</p>
+<ol>
+<li>给 instance 分配内存</li>
+<li>调用 Singleton 的构造函数来初始化成员变量</li>
+<li>将instance对象指向分配的内存空间（执行完这步 instance 就为非 null 了）</li>
+</ol>
+<p>​        但是在 JVM 的即时编译器中存在指令重排序的优化。也就是说上面的第二步和第三步的顺序是不能保证的，最终的执行顺序可能是 1-2-3 也可能是 1-3-2。如果是后者，则在 3 执行完毕、2未执行之前，被线程二抢占了，这时 instance 已经是非 null 了（但却没有初始化），所以线程二会直接返回 instance，被使用后，就会报错。</p>
+<p><a href="http://chen-tao.github.io/2016/12/30/about-java-singleton/">volatile禁止指令重排序参考链接</a></p>
+</li>
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">bsworld</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-03-09 14:45
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a target="_blank" rel="license noopener" href="https://github.com/nusr/blog/blob/master/LICENSE">MIT</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/jvm/">jvm</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/hugo&#43;typora%E6%95%99%E7%A8%8B/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Hugo&#43;typora教程</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E4%BA%8C%E5%8F%89%E6%A0%91%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/">
+            <span class="next-text nav-default">二叉树最近公共祖先</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="bsworldx@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/abxworld/abxworld.github.io" class="iconfont icon-github" title="github"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">bsworld</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-CN".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-138883536-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

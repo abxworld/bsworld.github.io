@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Mysql分库分表 - CHANGE</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="bsworld" /><meta name="description" content="" /><meta name="keywords" content="Mac, Github, Vue, React, Front End" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/mysql%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.651e6917abb0239242daa570c2bec9867267bbcd83646da5a850afe573347b44.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/reset-even.css">
+
+
+<meta property="og:title" content="Mysql分库分表" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/mysql%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/" />
+<meta property="article:published_time" content="2021-03-25T19:12:01+08:00" />
+<meta property="article:modified_time" content="2021-03-25T19:12:01+08:00" />
+<meta itemprop="name" content="Mysql分库分表">
+<meta itemprop="description" content="">
+<meta itemprop="datePublished" content="2021-03-25T19:12:01+08:00" />
+<meta itemprop="dateModified" content="2021-03-25T19:12:01+08:00" />
+<meta itemprop="wordCount" content="2116">
+
+
+
+<meta itemprop="keywords" content="mysql," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Mysql分库分表"/>
+<meta name="twitter:description" content=""/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">CHANGE</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于我</li>
+      </a><a href="https://github.com/abxworld/abxworld.github.io">
+        <li class="mobile-menu-item">阅读清单</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">CHANGE</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于我</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/abxworld/abxworld.github.io">阅读清单</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Mysql分库分表</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-25 19:12 </span>
+        <div class="post-category">
+            <a href="/categories/mysql/"> mysql </a>
+            </div>
+          <span class="more-meta"> 约 2116 字 </span>
+          <span class="more-meta"> 预计阅读 5 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    
+    <div class="post-content">
+      <h2 id="背景">背景</h2>
+<p>砍订单主表，详情表，现有数据量超过3千万条，对于单表数据量超过2千万数据，查询数据的速度就会变慢，而且目前每天仍以五万条左右的数据增长，考虑到性能等原因，需要对这两个表进行分表，同时砍订单任务表目前的数据数量虽然不对（原因是这个是最近上线的需求，所以数据量就少一些）也需要分表</p>
+<h2 id="为什么只需要分表而不需要分库">为什么只需要分表而不需要分库</h2>
+<p>因为是根据现有的业务及系统来看，主要有以下两点原因</p>
+<ul>
+<li>用户绝大部分时间只会访问最近的数据，极少有访问历史数据，所以请求量集中在最近的数据上，数据量有限，而且单库所支持的连接数已经足够用户查询使用</li>
+<li>在砍订单系统设计中，有redis做缓存，用户会先访问redis数据，如果redis里没有数据才会接着访问数据库，而redis里缓存的就是最近的数据，这样极大地减小对数据库的访问压力</li>
+</ul>
+<p>基于以上两点，对砍订单的部分表进行分表操作，长远来看数据量会越来越多，为避免二次分表，尽量这次分表就多分一些表，暂定为64张表，足够使用。</p>
+<h2 id="分表中间件的选择">分表中间件的选择</h2>
+<p>目前主流的分库分表中间件有</p>
+<ul>
+<li>Sharding-jdbc</li>
+<li>mycat</li>
+</ul>
+<p>考虑到sharding-jdbc的易用性，功能支持比较全面等原因选择sharding-jdbc来做分表中间件</p>
+<h2 id="sharding-jdbc的基本使用">Sharding-jdbc的基本使用</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="nd">@Slf4j</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">ShardingConfig</span><span class="o">{</span>
+
+    <span class="kd">private</span> <span class="n">DataSource</span> <span class="n">dataSource</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">databaseName</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="n">DataSource</span> <span class="nf">getShardingDataSource</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">SQLException</span> <span class="o">{</span>
+        <span class="n">ShardingRuleConfiguration</span> <span class="n">config</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ShardingRuleConfiguration</span><span class="o">();</span>
+        <span class="n">config</span><span class="o">.</span><span class="na">setDefaultDataSourceName</span><span class="o">(</span><span class="n">databaseName</span><span class="o">);</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="n">ShardingTableEnums</span> <span class="n">shardingTableEnums</span> <span class="o">:</span><span class="n">EnumSet</span><span class="o">.</span><span class="na">allOf</span><span class="o">(</span><span class="n">ShardingTableEnums</span><span class="o">.</span><span class="na">class</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">TableRuleConfiguration</span> <span class="n">tableRuleConfiguration</span> <span class="o">=</span> <span class="n">getTableRuleConfiguration</span><span class="o">(</span><span class="n">shardingTableEnums</span><span class="o">);</span>
+            <span class="n">config</span><span class="o">.</span><span class="na">getTableRuleConfigs</span><span class="o">().</span><span class="na">add</span><span class="o">(</span><span class="n">tableRuleConfiguration</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">log</span><span class="o">.</span><span class="na">isInfoEnabled</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">info</span><span class="o">(</span><span class="s">&#34;getShardingDataSource(), tableRuleConfigs:{}&#34;</span><span class="o">,</span> <span class="n">JSON</span><span class="o">.</span><span class="na">toJSONString</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">getTableRuleConfigs</span><span class="o">()));</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="k">new</span> <span class="n">ShardingDataSource</span><span class="o">(</span><span class="n">config</span><span class="o">.</span><span class="na">build</span><span class="o">(</span><span class="n">createDataSourceMap</span><span class="o">()));</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="n">TableRuleConfiguration</span> <span class="nf">getTableRuleConfiguration</span><span class="o">(</span><span class="n">ShardingTableEnums</span> <span class="n">shardingTableEnums</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">TableRuleConfiguration</span> <span class="n">orderTableRuleConfig</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TableRuleConfiguration</span><span class="o">();</span>
+        <span class="n">orderTableRuleConfig</span><span class="o">.</span><span class="na">setLogicTable</span><span class="o">(</span><span class="n">shardingTableEnums</span><span class="o">.</span><span class="na">getTableName</span><span class="o">());</span>
+        <span class="n">orderTableRuleConfig</span><span class="o">.</span><span class="na">setActualDataNodes</span><span class="o">(</span><span class="n">databaseName</span> <span class="o">+</span> <span class="s">&#34;.&#34;</span> <span class="o">+</span> <span class="n">shardingTableEnums</span><span class="o">.</span><span class="na">getTableName</span><span class="o">()</span> <span class="o">+</span> <span class="s">&#34;_$&#34;</span> <span class="o">+</span> <span class="s">&#34;{&#34;</span> <span class="o">+</span> <span class="n">shardingTableEnums</span><span class="o">.</span><span class="na">getTableStartIndex</span><span class="o">()</span> <span class="o">+</span> <span class="s">&#34;..&#34;</span> <span class="o">+</span> <span class="n">shardingTableEnums</span><span class="o">.</span><span class="na">getTableEndIndex</span><span class="o">()</span> <span class="o">+</span> <span class="s">&#34;}&#34;</span><span class="o">);</span>
+        <span class="n">orderTableRuleConfig</span><span class="o">.</span><span class="na">setTableShardingStrategyConfig</span><span class="o">(</span><span class="k">new</span> <span class="n">StandardShardingStrategyConfiguration</span><span class="o">(</span><span class="n">shardingTableEnums</span><span class="o">.</span><span class="na">getShardingColumn</span><span class="o">(),</span><span class="n">shardingTableEnums</span><span class="o">.</span><span class="na">getShardingTableClazz</span><span class="o">().</span><span class="na">getName</span><span class="o">()));</span>
+        <span class="k">return</span> <span class="n">orderTableRuleConfig</span><span class="o">;</span>
+    <span class="o">}</span>
+  
+    <span class="kd">private</span> <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">DataSource</span><span class="o">&gt;</span> <span class="nf">createDataSourceMap</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">DataSource</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="k">new</span> <span class="n">HashMap</span><span class="o">&lt;&gt;();</span>
+        <span class="n">result</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">databaseName</span><span class="o">,</span> <span class="n">dataSource</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">result</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>以上是配置sharding-jdbc分表的代码，主要分为以下两部分</p>
+<ul>
+<li>
+<p>配置分表策略</p>
+<p>该部分由getTableRuleConfiguration方法实现，</p>
+<ul>
+<li>
+<p>logicTable</p>
+<p>指的是逻辑表，可以这么理解，有一张表user_info在分表之后可以分为user_info_0,user_info_1..user_info_63，user_info就是这些分表的逻辑表，因为这64张表的字段结构是一模一样的，只不过名字不一样，所以提取出一个user_info来指代这些相同结构的表，同时在mybatis中的mapper.xml里写的也是logicTable而不是实际的表名</p>
+</li>
+<li>
+<p>actcualDataNodes</p>
+<p>指的实际库表名称，仍以user_info表为例，假如说库名是daojia，分成64张表，从索引0开始到索引63，那么就可以配置为<strong>daojia.user_${0..63}</strong></p>
+</li>
+<li>
+<p>TableShardingStrategyConfig</p>
+<p>顾名思义就是配置分表策略，也就是按照什么样的规则去将数据路由到不同的表，后面细说</p>
+</li>
+</ul>
+</li>
+<li>
+<p>配置数据源</p>
+<p>虽然getShardingDataSource方法最终返回的也是DataSource类型，但是它更像是一个包装类，也就是说它会包装实际的数据源，所以实际的数据源要有外部传入，或者在调用createDataSourceMap方法时创建</p>
+</li>
+</ul>
+<h2 id="分表策略">分表策略</h2>
+<p>sharding-jdbc提供了多种分表策略，常用的有以下两种</p>
+<ul>
+<li>
+<p>PreciseShardingAlgorithm</p>
+<p>这种策略方式仅支持一个路由键去做路由，比如说user_info中，只能指定一个字段，假如说是pin，也就是根据pin去做路由，但是如果想用多个字段去同时做路由就不支持了</p>
+</li>
+<li>
+<p>ComplexKeysShardingAlgorithm</p>
+<p>这种策略支持多个字段做路由，提供更复杂的分表功能</p>
+</li>
+</ul>
+<p>由于砍订单的业务，如主表是跟用户有关的，所以可以根据pin去做路由，明细表是跟主表的主键关联的所以可以主表的主键做路由，任务表同理，所以用PreciseShardingAlgorithm分表策略即可</p>
+<p>如果主键类型是varchar的，可以参考如下配置</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">StringTableShardingAlgorithm</span> <span class="kd">implements</span> <span class="n">PreciseShardingAlgorithm</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="o">{</span>
+
+<span class="kd">public</span> <span class="n">String</span> <span class="nf">doSharding</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span><span class="n">availableTargetNames</span><span class="o">,</span><span class="n">PreciseShardingValue</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">shardingValue</span><span class="o">)</span> 
+    <span class="o">{</span>
+        <span class="n">String</span> <span class="n">val</span> <span class="o">=</span> <span class="n">shardingValue</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+        <span class="k">return</span> <span class="n">doCommonSharding</span><span class="o">(</span><span class="n">availableTargetNames</span><span class="o">,</span> <span class="n">val</span><span class="o">.</span><span class="na">hashCode</span><span class="o">(),</span> <span class="n">shardingValue</span><span class="o">.</span><span class="na">getLogicTableName</span><span class="o">(),</span> <span class="n">shardingValue</span><span class="o">.</span><span class="na">getColumnName</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="n">String</span> <span class="nf">doCommonSharding</span><span class="o">(</span><span class="n">Collection</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">availableTargetNames</span><span class="o">,</span> <span class="kt">int</span> <span class="n">hashCode</span><span class="o">,</span> <span class="n">String</span> <span class="n">tableName</span><span class="o">,</span> <span class="n">String</span> <span class="n">columnName</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">String</span> <span class="n">selectTableName</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">ShardingTableEnums</span> <span class="n">selectShardingTable</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">ShardingTableEnums</span> <span class="n">shardingTableEnums</span> <span class="o">:</span> <span class="n">EnumSet</span><span class="o">.</span><span class="na">allOf</span><span class="o">(</span><span class="n">ShardingTableEnums</span><span class="o">.</span><span class="na">class</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">String</span> <span class="n">tableNameEnum</span> <span class="o">=</span> <span class="n">shardingTableEnums</span><span class="o">.</span><span class="na">getTableName</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">tableNameEnum</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">tableName</span><span class="o">))</span> <span class="o">{</span>
+                <span class="n">selectTableName</span> <span class="o">=</span> <span class="n">tableName</span><span class="o">;</span>
+                <span class="n">selectShardingTable</span> <span class="o">=</span> <span class="n">shardingTableEnums</span><span class="o">;</span>
+                <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">StringUtils</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">(</span><span class="n">selectTableName</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">log</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">&#34;在分表枚举中未找到需要分表的表，入参tableName:{}, 入参columnName:{}&#34;</span><span class="o">,</span> <span class="n">tableName</span><span class="o">,</span> <span class="n">columnName</span><span class="o">);</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalStateException</span><span class="o">(</span><span class="s">&#34;在分表枚举中未找到需要分表的表，入参tableName:&#34;</span> <span class="o">+</span> <span class="n">tableName</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="kt">int</span> <span class="n">size</span> <span class="o">=</span> <span class="n">availableTargetNames</span><span class="o">.</span><span class="na">size</span><span class="o">();</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">each</span> <span class="o">:</span> <span class="n">availableTargetNames</span><span class="o">)</span> <span class="o">{</span>
+            <span class="kt">int</span> <span class="n">nVal</span> <span class="o">=</span> <span class="o">(</span><span class="n">hashCode</span> <span class="o">%</span> <span class="n">size</span><span class="o">);</span>
+            <span class="n">nVal</span> <span class="o">=</span> <span class="n">nVal</span> <span class="o">+</span> <span class="n">selectShardingTable</span><span class="o">.</span><span class="na">getTableStartIndex</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">each</span><span class="o">.</span><span class="na">endsWith</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">nVal</span><span class="o">)))</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="n">each</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="n">IllegalStateException</span><span class="o">(</span><span class="s">&#34;根据路由规则，未找到需要路由到的表，入参tableName:&#34;</span> <span class="o">+</span> <span class="n">tableName</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><p>主要分表逻辑就是根据路由键的hashcode，对分表的总数量取余，余数即是分表的索引</p>
+<h2 id="新老数据的同步">新老数据的同步</h2>
+<p>由于现有的数据全都在老表中，现在分表之后需要同步到新表里，但是因为是线上业务，在同步的过程中还会有新的数据在插入或者更新，因此需要保证新老数据的一致性以及线上砍订单运行的稳定</p>
+<ol>
+<li>
+<p>数据双写</p>
+<p>数据在插入老表之后，同样将该份数据插入新表，同理更新数据时，也要进行双更新</p>
+</li>
+<li>
+<p>数据同步到分表</p>
+<p>在后台启动一个线程，以天为维度查询老表的数据，写入新的表中，直到遇到DuplicateKey异常，这时候说明在这之后的数据都已经同步到新表里了</p>
+</li>
+<li>
+<p>继续双写，切换开关到读新表（该开关控制是读老表，还是读新表）</p>
+</li>
+</ol>
+<p>其中1，2步骤可以同步进行，在以上两步执行完成后，执行第3步骤，验证线上运行是否稳定，一般继续保持双写一天左右，这样可以保证即使有问题，也有主表的数据做备份，问题可回溯</p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">bsworld</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-03-25 19:12
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a target="_blank" rel="license noopener" href="https://github.com/nusr/blog/blob/master/LICENSE">MIT</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/mysql/">mysql</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/kafka/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Kafka</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/">
+            <span class="next-text nav-default">动态代理</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="bsworldx@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/abxworld/abxworld.github.io" class="iconfont icon-github" title="github"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">bsworld</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-CN".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-138883536-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

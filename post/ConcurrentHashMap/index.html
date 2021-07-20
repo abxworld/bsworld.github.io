@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title> - CHANGE</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="bsworld" /><meta name="description" content="title: &amp;ldquo;ConcurrentHashMap&amp;rdquo; date: 2021-03-11T14:15:07&#43;08:00 description: &amp;quot;&amp;rdquo; draft: false tags: [java,map] categories: [] toc: false autoCollapseToc: false typora-root-url: ../../static
+" /><meta name="keywords" content="Mac, Github, Vue, React, Front End" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/ConcurrentHashMap/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.651e6917abb0239242daa570c2bec9867267bbcd83646da5a850afe573347b44.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/reset-even.css">
+
+
+<meta property="og:title" content="" />
+<meta property="og:description" content="title: &ldquo;ConcurrentHashMap&rdquo;
+date: 2021-03-11T14:15:07&#43;08:00
+description: &quot;&rdquo;
+draft: false
+tags: [java,map]
+categories: []
+toc: false
+autoCollapseToc: false
+typora-root-url: ../../static" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/ConcurrentHashMap/" />
+
+<meta itemprop="name" content="">
+<meta itemprop="description" content="title: &ldquo;ConcurrentHashMap&rdquo;
+date: 2021-03-11T14:15:07&#43;08:00
+description: &quot;&rdquo;
+draft: false
+tags: [java,map]
+categories: []
+toc: false
+autoCollapseToc: false
+typora-root-url: ../../static">
+
+<meta itemprop="wordCount" content="1121">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content=""/>
+<meta name="twitter:description" content="title: &ldquo;ConcurrentHashMap&rdquo;
+date: 2021-03-11T14:15:07&#43;08:00
+description: &quot;&rdquo;
+draft: false
+tags: [java,map]
+categories: []
+toc: false
+autoCollapseToc: false
+typora-root-url: ../../static"/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">CHANGE</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于我</li>
+      </a><a href="https://github.com/abxworld/abxworld.github.io">
+        <li class="mobile-menu-item">阅读清单</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">CHANGE</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于我</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/abxworld/abxworld.github.io">阅读清单</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title"></h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 0001-01-01 00:00 </span>
+        
+          <span class="more-meta"> 约 1121 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+  <div class="post-outdated">
+    <div class="warn">
+      <p>【注意】最后更新于 <span class="timeago" datetime="0001-01-01T00:00:00" title="January 1, 0001">January 1, 0001</span>，文中内容可能已过时，请谨慎使用。</p>
+    </div>
+  </div>
+    <div class="post-content">
+      <p>title: &ldquo;ConcurrentHashMap&rdquo;
+date: 2021-03-11T14:15:07+08:00
+description: &quot;&rdquo;
+draft: false
+tags: [java,map]
+categories: []
+toc: false
+autoCollapseToc: false
+typora-root-url: ../../static</p>
+<p>需要了解的内容有：</p>
+<ul>
+<li>
+<h4 id="concurrenthashmap的实现原理"><strong>ConcurrentHashMap的实现原理</strong></h4>
+<ul>
+<li>
+<p><strong>ConcurrentHashMap1.7和1.8的区别？</strong></p>
+<ul>
+<li>
+<p>JDK1.7的采用分段锁的方式来实现，一个map被分成多段，每段中再有多个HashEntry构成，由于锁的维度是在segment上，粒度比较大这样并发程度自然也就低了</p>
+<p><img src="../../static/ConcurrentHashMap/image-20210506175341369.png" alt="image-20210506175341369"></p>
+</li>
+<li>
+<p>JDK1.8采用CAS+volatile+synchronized的方式来实现，锁的维度是每个hash表中具体桶的头结点，这样锁的粒度变细了很多，也自然提高了并发度</p>
+<p><img src="../../static/ConcurrentHashMap/image-20210506175355946.png" alt="image-20210506175355946"></p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>ConcurrentHashMap使用什么技术来保证线程安全</strong></p>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="concurrenthashmap的put方法"><strong>ConcurrentHashMap的put()方法</strong></h4>
+<ul>
+<li>
+<p><strong>ConcurrentHashmap 不支持 key 或者 value 为 null 的原因？</strong></p>
+</li>
+<li>
+<p><strong>put()方法如何实现线程安全呢？</strong></p>
+<ul>
+<li>通过CAS的方式初始化hash表，并且指向hash表的变量被volatile修饰</li>
+<li>采用CAS的方式初始化指定hash桶 的头结点</li>
+<li>通过synchronized锁住指定hash桶的头节点，并且由于Node的val值与next节点被volatile修饰，可以保证线程间的可见性</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<h4 id="concurrenthashmap扩容机制"><strong>ConcurrentHashMap扩容机制</strong></h4>
+</li>
+<li>
+<h4 id="concurrenthashmap的get方法是否要加锁为什么"><strong>ConcurrentHashMap的get方法是否要加锁，为什么？</strong></h4>
+<p>先说结论，在get的时候是不需要加锁的，因为有volatile来保证线程间的可见性</p>
+<ul>
+<li>
+<p>​	ConcurrentHashMap中的hash表是用volatile修饰的，但是修饰的是table这个变量，而不是里面具体的值，举例，volatile int array[10]是指array的地址是volatile的而不是数组元素的值是volatile的.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"> <span class="kd">transient</span> <span class="kd">volatile</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;[]</span> <span class="n">table</span><span class="o">;</span>
+</code></pre></td></tr></table>
+</div>
+</div></li>
+<li>
+<p>get操作可以无锁是由于Node的元素val和指针next是用volatile修饰的，在多线程环境下线程A修改因为hash冲突修改结点的val或者新增节点的时候是对线程B可见的。</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-java" data-lang="java"><span class="kd">static</span> <span class="kd">class</span> <span class="nc">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="kd">implements</span> <span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="kt">int</span> <span class="n">hash</span><span class="o">;</span>
+    <span class="kd">final</span> <span class="n">K</span> <span class="n">key</span><span class="o">;</span>
+    <span class="c1">//可以看到这些都用了volatile修饰
+</span><span class="c1"></span>    <span class="kd">volatile</span> <span class="n">V</span> <span class="n">val</span><span class="o">;</span>
+    <span class="kd">volatile</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">next</span><span class="o">;</span>
+    
+    <span class="n">Node</span><span class="o">(</span><span class="kt">int</span> <span class="n">hash</span><span class="o">,</span> <span class="n">K</span> <span class="n">key</span><span class="o">,</span> <span class="n">V</span> <span class="n">val</span><span class="o">,</span> <span class="n">Node</span><span class="o">&lt;</span><span class="n">K</span><span class="o">,</span><span class="n">V</span><span class="o">&gt;</span> <span class="n">next</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">hash</span> <span class="o">=</span> <span class="n">hash</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">val</span> <span class="o">=</span> <span class="n">val</span><span class="o">;</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">next</span> <span class="o">=</span> <span class="n">next</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>总结</p>
+<ul>
+<li>在1.8中ConcurrentHashMap的get操作全程不需要加锁，这也是它比其他并发集合比如hashtable、用Collections.synchronizedMap()包装的hashmap;安全效率高的原因之一。</li>
+<li>get操作全程不需要加锁是因为Node的成员val是用volatile修饰的和数组用volatile修饰没有关系。</li>
+<li>数组用volatile修饰主要是保证在数组扩容的时候保证可见性。</li>
+</ul>
+<h4 id="其他问题"><strong>其他问题</strong></h4>
+</li>
+<li>
+<h4 id="为什么使用concurrenthashmap"><strong>为什么使用ConcurrentHashMap</strong></h4>
+</li>
+<li>
+<h4 id="concurrenthashmap迭代器是强一致性还是弱一致性hashmap呢"><strong>ConcurrentHashMap迭代器是强一致性还是弱一致性？HashMap呢？</strong></h4>
+</li>
+</ul>
+</li>
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">bsworld</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        0001-01-01 00:00
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a target="_blank" rel="license noopener" href="https://github.com/nusr/blog/blob/master/LICENSE">MIT</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E6%B5%81%E5%BC%8F%E9%A3%8E%E6%A0%BC%E7%BA%BF%E7%A8%8B%E6%B1%A0/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">流式风格线程池</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/redis/">
+            <span class="next-text nav-default">Redis</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="bsworldx@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/abxworld/abxworld.github.io" class="iconfont icon-github" title="github"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">bsworld</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-CN".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-138883536-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

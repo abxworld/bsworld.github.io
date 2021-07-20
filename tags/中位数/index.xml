@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>中位数 on CHANGE</title>
+    <link>http://localhost:1313/tags/%E4%B8%AD%E4%BD%8D%E6%95%B0/</link>
+    <description>Recent content in 中位数 on CHANGE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 08 May 2021 11:29:43 +0800</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/tags/%E4%B8%AD%E4%BD%8D%E6%95%B0/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>数据流中的中位数</title>
+      <link>http://localhost:1313/post/%E6%95%B0%E6%8D%AE%E6%B5%81%E4%B8%AD%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/</link>
+      <pubDate>Sat, 08 May 2021 11:29:43 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/%E6%95%B0%E6%8D%AE%E6%B5%81%E4%B8%AD%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

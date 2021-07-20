@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>动态代理 - CHANGE</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="bsworld" /><meta name="description" content="" /><meta name="keywords" content="Mac, Github, Vue, React, Front End" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.651e6917abb0239242daa570c2bec9867267bbcd83646da5a850afe573347b44.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/reset-even.css">
+
+
+<meta property="og:title" content="动态代理" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/%E5%8A%A8%E6%80%81%E4%BB%A3%E7%90%86/" />
+<meta property="article:published_time" content="2021-03-23T20:24:18+08:00" />
+<meta property="article:modified_time" content="2021-03-23T20:24:18+08:00" />
+<meta itemprop="name" content="动态代理">
+<meta itemprop="description" content="">
+<meta itemprop="datePublished" content="2021-03-23T20:24:18+08:00" />
+<meta itemprop="dateModified" content="2021-03-23T20:24:18+08:00" />
+<meta itemprop="wordCount" content="1731">
+
+
+
+<meta itemprop="keywords" content="spring,aop," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="动态代理"/>
+<meta name="twitter:description" content=""/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">CHANGE</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于我</li>
+      </a><a href="https://github.com/abxworld/abxworld.github.io">
+        <li class="mobile-menu-item">阅读清单</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">CHANGE</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于我</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/abxworld/abxworld.github.io">阅读清单</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">动态代理</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-23 20:24 </span>
+        <div class="post-category">
+            <a href="/categories/spring/"> spring </a>
+            </div>
+          <span class="more-meta"> 约 1731 字 </span>
+          <span class="more-meta"> 预计阅读 4 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    
+    <div class="post-content">
+      <h2 id="aop的实现原理">aop的实现原理</h2>
+<p>  Spring的AOP实现原理其实很简单，就是通过<strong>动态代理</strong>实现的。如果我们为<code>Spring</code>的某个<code>bean</code>配置了切面，那么<code>Spring</code>在创建这个<code>bean</code>的时候，实际上创,,建的是这个<code>bean</code>的一个代理对象，我们后续对<code>bean</code>中方法的调用，实际上调用的是代理类重写的代理方法。而<code>Spring</code>的<code>AOP</code>使用了两种动态代理，分别是<strong>JDK的动态代理</strong>，以及<strong>CGLib的动态代理</strong>。</p>
+<ul>
+<li>JDK动态代理</li>
+</ul>
+<blockquote>
+<p>  <strong>Spring默认使用JDK的动态代理实现AOP，类如果实现了接口，Spring就会使用这种方式实现动态代理</strong>。熟悉<code>Java</code>语言的应该会对<code>JDK</code>动态代理有所了解。<code>JDK</code>实现动态代理需要两个组件，首先第一个就是<code>InvocationHandler</code>接口。我们在使用<code>JDK</code>的动态代理时，需要编写一个类，去实现这个接口，然后重写<code>invoke</code>方法，这个方法其实就是我们提供的代理方法。然后<code>JDK</code>动态代理需要使用的第二个组件就是<code>Proxy</code>这个类，我们可以通过这个类的<code>newProxyInstance</code>方法，返回一个代理对象。生成的代理类实现了原来那个类的所有接口，并对接口的方法进行了代理，我们通过代理对象调用这些方法时，底层将通过反射，调用我们实现的<code>invoke</code>方法。</p>
+</blockquote>
+<ul>
+<li>CGLib动态代理</li>
+</ul>
+<blockquote>
+<p>  <code>JDK</code>的动态代理存在限制，那就是被代理的类必须是一个实现了接口的类，代理类需要实现相同的接口，代理接口中声明的方法。若需要代理的类没有实现接口，此时<code>JDK</code>的动态代理将没有办法使用，于是<code>Spring</code>会使用<code>CGLib</code>的动态代理来生成代理对象。<code>CGLib</code>直接操作字节码，生成类的子类，重写类的方法完成代理。</p>
+</blockquote>
+<p>  以上就是<code>Spring</code>实现动态的两种方式，下面我们具体来谈一谈这两种生成动态代理的方式。</p>
+<h2 id="jdk的动态代理">jdk的动态代理</h2>
+<ul>
+<li>实现原理</li>
+</ul>
+<p>  <code>JDK</code>的动态代理是基于<strong>反射</strong>实现。<code>JDK</code>通过反射，生成一个代理类，这个代理类实现了原来那个类的全部接口，并对接口中定义的所有方法进行了代理。当我们通过代理对象执行原来那个类的方法时，代理类底层会通过反射机制，回调我们实现的<code>InvocationHandler</code>接口的<code>invoke</code>方法。<strong>并且这个代理类是Proxy类的子类</strong>（记住这个结论，后面测试要用）。这就是<code>JDK</code>动态代理大致的实现方式。</p>
+<p><strong>（二）优点</strong></p>
+<ol>
+<li><code>JDK</code>动态代理是<code>JDK</code>原生的，不需要任何依赖即可使用；</li>
+<li>通过反射机制生成代理类的速度要比<code>CGLib</code>操作字节码生成代理类的速度更快；</li>
+</ol>
+<p><strong>（三）缺点</strong></p>
+<ol>
+<li>如果要使用<code>JDK</code>动态代理，被代理的类必须实现了接口，否则无法代理；</li>
+<li><code>JDK</code>动态代理无法为没有在接口中定义的方法实现代理，假设我们有一个实现了接口的类，我们为它的一个不属于接口中的方法配置了切面，<code>Spring</code>仍然会使用<code>JDK</code>的动态代理，但是由于配置了切面的方法不属于接口，为这个方法配置的切面将不会被织入。</li>
+<li><code>JDK</code>动态代理执行代理方法时，需要通过反射机制进行回调，此时方法执行的效率比较低；</li>
+</ol>
+<h2 id="cglig动态代理">cglig动态代理</h2>
+<ul>
+<li>实现原理</li>
+</ul>
+<blockquote>
+<p>    CGLib实现动态代理的原理是，底层采用了ASM字节码生成框架，直接对需要代理的类的字节码进行操作，生成这个类的一个子类，并重写了类的所有可以重写的方法，在重写的过程中，将我们定义的额外的逻辑（简单理解为Spring`中的切面）织入到方法中，对方法进行了增强。而通过字节码操作生成的代理类，和我们自己编写并编译后的类没有太大区别。</p>
+</blockquote>
+<ul>
+<li>
+<p>优点</p>
+<ul>
+<li>使用<code>CGLib</code>代理的类，不需要实现接口，因为<code>CGLib</code>生成的代理类是直接继承自需要被代理的类</li>
+<li><code>CGLib</code>生成的代理类是原来那个类的子类，这就意味着这个代理类可以为原来那个类中，所有能够被子类重写的方法进行代理</li>
+<li><code>CGLib</code>生成的代理类，和我们自己编写并编译的类没有太大区别，对方法的调用和直接调用普通类的方式一致，所以<code>CGLib</code>执行代理方法的效率要高于<code>JDK</code>的动态代理；</li>
+</ul>
+</li>
+<li>
+<p>缺点</p>
+<ul>
+<li>由于<code>CGLib</code>的代理类使用的是继承，这也就意味着如果需要被代理的类是一个<code>final</code>类，则无法使用<code>CGLib</code>代理；</li>
+<li>由于<code>CGLib</code>实现代理方法的方式是重写父类的方法，所以无法对<code>final</code>方法，或者<code>private</code>方法进行代理，因为子类无法重写这些方法；</li>
+<li>CGLib生成代理类的方式是通过操作字节码，这种方式生成代理类的速度要比<code>JDK</code>通过反射生成代理类的速度更慢；</li>
+</ul>
+</li>
+</ul>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">bsworld</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-03-23 20:24
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a target="_blank" rel="license noopener" href="https://github.com/nusr/blog/blob/master/LICENSE">MIT</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/spring/">spring</a>
+          <a href="/tags/aop/">aop</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/mysql%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">Mysql分库分表</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E5%BF%AB%E9%80%9F%E6%8E%92%E5%BA%8F/">
+            <span class="next-text nav-default">快速排序</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="bsworldx@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/abxworld/abxworld.github.io" class="iconfont icon-github" title="github"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">bsworld</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-CN".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-138883536-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

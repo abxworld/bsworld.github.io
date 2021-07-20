@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Redis - CHANGE</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="bsworld" /><meta name="description" content="" /><meta name="keywords" content="Mac, Github, Vue, React, Front End" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/redis/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.651e6917abb0239242daa570c2bec9867267bbcd83646da5a850afe573347b44.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/reset-even.css">
+
+
+<meta property="og:title" content="Redis" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/redis/" />
+
+<meta itemprop="name" content="Redis">
+<meta itemprop="description" content="">
+
+<meta itemprop="wordCount" content="8088">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Redis"/>
+<meta name="twitter:description" content=""/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">CHANGE</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于我</li>
+      </a><a href="https://github.com/abxworld/abxworld.github.io">
+        <li class="mobile-menu-item">阅读清单</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">CHANGE</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于我</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/abxworld/abxworld.github.io">阅读清单</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Redis</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 0001-01-01 00:00 </span>
+        
+          <span class="more-meta"> 约 8088 字 </span>
+          <span class="more-meta"> 预计阅读 17 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    <div class="post-toc" id="post-toc">
+  <h2 class="post-toc-title">文章目录</h2>
+  <div class="post-toc-content">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#一redis集群使用lua脚本">一、redis集群使用lua脚本</a></li>
+    <li><a href="#二redis集群负载均衡的选择">二、redis集群负载均衡的选择</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#三redis单线程与多线程">三、redis单线程与多线程</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#四redis数据过期相关">四、redis数据过期相关</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#五redis持久化策略">五、redis持久化策略</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#六集群">六、集群</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+    <li><a href="#七redis数据结构底层实现">七、redis数据结构底层实现</a>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+  </div>
+</div>
+  <div class="post-outdated">
+    <div class="warn">
+      <p>【注意】最后更新于 <span class="timeago" datetime="0001-01-01T00:00:00" title="January 1, 0001">January 1, 0001</span>，文中内容可能已过时，请谨慎使用。</p>
+    </div>
+  </div>
+    <div class="post-content">
+      <p>我的博客即将同步至 OSCHINA 社区，这是我的 OSCHINA ID：彼来风弦，邀请大家一同入驻：https://www.oschina.net/sharing-plan/apply</p>
+<h2 id="一redis集群使用lua脚本">一、redis集群使用lua脚本</h2>
+<ul>
+<li>
+<p>背景:</p>
+<p>​		由于lua脚本能保证所执行的脚本具有一致性，所以操作的脚本的Key必须要在同一台server上，但是如果这些个key是分布在这台server的不同slot上，由于集群在增删server的时候基本上都会涉及到slot的重新划分，这样又会导致这些key分布在不同的server上，进而在执行这个lua脚本的时候没办法保证一致性，所以解决方案就是，这些key必须分布在同一个slot上</p>
+</li>
+<li>
+<p>解决lua中的key分布在同一个slot:</p>
+<p>​	假如说涉及到的key有3个,分别是:</p>
+<p>​	order_1,order_2,order_3，</p>
+<p>​	<strong>那么可以通过在指定的共同前缀上加上	{}	也就是hash tag,</strong></p>
+<p>​	改为：</p>
+<p>​	{order}_1,{order}_2,{order}_3</p>
+<p>​	这样redis做hash的时候就只会对	{}	中的内容去做hash，进而达到key分布在同一个slot的目的，对于没有共同前缀或者共同值的情况，可以增加共同的内容，来达到这个目的</p>
+<p>参考链接:</p>
+<p>​	<strong><a href="https://www.codenong.com/cs107085477/">lua hash tag</a></strong></p>
+</li>
+</ul>
+<h2 id="二redis集群负载均衡的选择">二、redis集群负载均衡的选择</h2>
+<h5 id="1一致性hash">1、一致性hash</h5>
+<ul>
+<li>
+<p>优点:在增删节点的时候，只会影响部分数据而不是全部的数据,当机器数量较少时可以通过增加虚拟节点来进行负载均衡</p>
+</li>
+<li>
+<p>缺点:</p>
+<ul>
+<li>
+<p>当删除节点的时候，需要将受影响的key都找出来，进行数据重同步，会导致下一个顺序节点负载升高，如果要均衡负载，需要增删虚拟节点，受影响的key也需要重新hash，这样反而更麻烦</p>
+</li>
+<li>
+<p><strong>当增加节点时，需要将新加的节点的a的顺序节点b中的部分数据同步到a中，这就需要对b中的数据进行rehash，判断数据是落到新增的a节点中还是保持不变，然后还要对落在新节点中的数据进行同步</strong></p>
+<p>​	如图所示，一开始node2持有data1,2,3,4数据，当新增Node4节点的时候，就需要对data1,2,3,4进行rehash确定这部分数据是应该同步到node4上还是保持不动</p>
+<p><img src="/redis/redis_pic.png" alt="redis"></p>
+</li>
+</ul>
+<p>2、虚拟哈希槽(slot)</p>
+</li>
+<li>
+<p>优点:类似于一致性hash，不同的是它会预先分配slot到真实节点，可以预先知道指定master节点所管理的slot，当增删节点的时候只需要同步相应的slot即可</p>
+<p><strong>总结:一致性hash同步时需要找到涉及到的所有的key,并进行rehash，复杂耗时长，而哈希槽的数量较少只需要重新同步哈希槽，然后同步对应的kv即可，不需要再进行rehash，极大地降低耗时</strong></p>
+<p>参考链接:</p>
+<p><a href="https://segmentfault.com/a/1190000022718948">redis hash选择</a></p>
+</li>
+</ul>
+<h5 id="2客户端路由">2、客户端路由</h5>
+<ul>
+<li>
+<p>客户端根据本地 slot 缓存发送命令到源节点，如果存在键对应则直接执行并返回结果给客户端。</p>
+</li>
+<li>
+<p>如果节点返回 MOVED 错误，更新本地的 slot 到 Redis 节点的映射关系，然后重新发起请求。</p>
+</li>
+<li>
+<p>如果数据正在迁移中，节点会回复 ASK 重定向异常。格式如下: ( error ) ASK { slot } { targetIP } : { targetPort }</p>
+</li>
+<li>
+<p>客户端从 ASK 重定向异常提取出目标节点信息，发送 asking 命令到目标节点打开客户端连接标识，再执行键命令。</p>
+</li>
+<li>
+<p>ASK 和 MOVED 虽然都是对客户端的重定向控制，但是有着本质区别。ASK 重定向说明集群正在进行 slot 数据迁移，客户端无法知道什么时候迁移完成，因此只能是临时性的重定向，客户端不会更新 slot 到 Redis 节点的映射缓存。但是 MOVED 重定向说明键对应的槽已经明确指定到新的节点，因此需要更新 slot 到 Redis 节点的映射缓存。</p>
+<p><img src="/redis/redis-cluter.jpeg" alt="redis-cluter"></p>
+</li>
+</ul>
+<h2 id="三redis单线程与多线程">三、redis单线程与多线程</h2>
+<blockquote>
+<p>参考链接:https://mp.weixin.qq.com/s/FZu3acwK6zrCBZQ_3HoUgw</p>
+</blockquote>
+<blockquote>
+<p>严格来说从Redis4.0之后并不是单线程，除了主线程外，它也有后台线程在处理一些较为缓慢的操作，例如清理脏数据、无用连接的释放、大 key 的删除等等。</p>
+</blockquote>
+<h5 id="1redis使用单线程的原因">1、redis使用单线程的原因</h5>
+<ul>
+<li>
+<p><strong>使用Redis时，几乎不存在CPU成为瓶颈的情况， Redis主要受限于内存和网络</strong></p>
+<blockquote>
+<p>例如在一个普通的Linux系统上，Redis通过使用pipelining每秒可以处理100万个请求，所以如果应用程序主要使用O(N)或O(log(N))的命令，它几乎不会占用太多CPU。</p>
+</blockquote>
+</li>
+<li>
+<p><strong>使用了单线程后，可维护性高</strong></p>
+<blockquote>
+<p>多线程模型虽然在某些方面表现优异，但是它却引入了程序执行顺序的不确定性，带来了并发读写的一系列问题，增加了系统复杂度、同时可能存在线程切换、甚至加锁解锁、死锁造成的性能损耗。Redis通过AE事件模型以及IO多路复用等技术，处理性能非常高，因此没有必要使用多线程。单线程机制使得 Redis 内部实现的复杂度大大降低，Hash 的惰性 Rehash、Lpush 等等 “线程不安全” 的命令都可以无锁进行</p>
+</blockquote>
+</li>
+</ul>
+<h5 id="2redis使用多线程的原因">2、redis使用多线程的原因</h5>
+<ul>
+<li>
+<p>可以充分利用服务器 CPU 资源，目前主线程只能利用一个核</p>
+</li>
+<li>
+<p>多线程任务可以分摊 Redis 同步 IO 读写负荷</p>
+</li>
+</ul>
+<h2 id="四redis数据过期相关">四、redis数据过期相关</h2>
+<h5 id="1数据过期删除策略">1、数据过期删除策略</h5>
+<ul>
+<li>
+<p>定期扫描</p>
+<blockquote>
+<p>每隔一段时间，扫描一批key,对其中过期的key进行淘汰。并且redis底层会控制扫描的频率以及删除操作的执行时长以减少对cpu的占用，避免过多的影响redis的性能(也就是时间事件)</p>
+</blockquote>
+</li>
+<li>
+<p>惰性删除</p>
+<blockquote>
+<p>只在获取数据的时候，对key进行判断是否过期，如果过期则进行删除，好处是节省cpu的消耗，但是坏处是有可能导致很多过期key不能删除</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>对于为何不一直进行数据key的扫描，尽早的清理redis的内存，原因是一直扫描会浪费cpu，从而影响正常的数据的增删查询操作，所以通过 定期扫描  + 惰性删除策略 来达到内存清理的目的</p>
+</blockquote>
+<h5 id="2数据淘汰策略">2、数据淘汰策略</h5>
+<blockquote>
+<p>如果redis缓存的内存占用超过一定的限制，即使执行过期删除策略，仍然无法有效的降低内存使用，这个时候就需要进行数据淘汰</p>
+</blockquote>
+<ul>
+<li><strong>volatile-lru（least recently used）</strong>：从已设置过期时间的数据集（server.db[i].expires）中挑选最近最少使用的数据淘汰（这个是最常用的）</li>
+<li><strong>volatile-ttl</strong>：从已设置过期时间的数据集（server.db[i].expires）中挑选将要过期的数据淘汰</li>
+<li><strong>volatile-random</strong>：从已设置过期时间的数据集（server.db[i].expires）中任意选择数据淘汰</li>
+<li><strong>volatile-lfu</strong>：从所有配置了过期时间的键中驱逐使用频率最少的键</li>
+<li><strong>allkeys-lru（least recently used）</strong>：当内存不足以容纳新写入数据时，在键空间中，移除最近最少使用的 key</li>
+<li><strong>allkeys-random</strong>：从数据集（server.db[i].dict）中任意选择数据淘汰</li>
+<li><strong>allkeys-lfu</strong>：从所有键中驱逐使用频率最少的键</li>
+<li><strong>no-eviction</strong>：禁止驱逐数据，也就是说当内存不足以容纳新写入数据时，新写入操作会报错</li>
+</ul>
+<blockquote>
+<p><strong>记住的方式:lru、random各占两种，剩下的ttl只能是volatile类型的，还有一个就是no-eviction</strong></p>
+<p>常用淘汰策略的选择:个人经验最常用的就是volatile-lru,因为这个key是有过期时间的所以在一般情况下，即使淘汰了也是没有关系的，在数据库、磁盘等还持久化的地方还能找的到这些过期数据，可以进行数据的回写，但是对于没有设置过期时间的缓存，很可能就没有对缓存数据的备份，如果删除，数据就丢了，进而影响正常的业务，所以一般不会使用allkeys的策略</p>
+</blockquote>
+<h5 id="3缓存雪崩缓存穿透缓存击穿热点数据失效">3、缓存雪崩、缓存穿透、缓存击穿、热点数据失效</h5>
+<ul>
+<li>
+<p>缓存雪崩</p>
+<p>概念:</p>
+<blockquote>
+<p>如果缓在<strong>某一个时刻出现大规模的key失效</strong>，那么就会导致大量的请求打在了数据库上面，导致数据库压力巨大，如果在高并发的情况下，可能瞬间就会导致数据库宕机。这时候如果运维马上又重启数据库，马上又会有新的流量把数据库打死。这就是缓存雪崩</p>
+</blockquote>
+<p>解决方案:</p>
+<ul>
+<li>尽量将过期时间设置的均匀些，避免缓存在同一时间失效</li>
+<li>使用熔断机制。当流量到达一定的阈值时，就直接返回“系统拥挤”之类的提示，防止过多的请求打在数据库上。至少能保证一部分用户是可以正常使用，其他用户多刷新几次也能得到结果</li>
+<li>热点数据设置较长的过期时间，避免频繁失效，导致的大量的查询，如果数据量较小，可以设置永不过期</li>
+</ul>
+</li>
+<li>
+<p>缓存击穿</p>
+<p>概念：</p>
+<blockquote>
+<p>跟缓存雪崩有点类似，缓存雪崩是大规模的key失效，而<strong>缓存击穿是一个热点的Key，有大并发集中对其进行访问，突然间这个Key失效了</strong>，导致大并发全部打在数据库上，导致数据库压力剧增。这种现象就叫做缓存击穿</p>
+</blockquote>
+<p>解决方案：</p>
+<ul>
+<li>热点数据设置较长的过期时间，避免频繁失效，导致的大量的查询，如果数据量较小，可以设置永不过期</li>
+<li>使用互斥锁，当请求相同的数据时，只需要一个线程去加载数据，然后更新数据库，避免大量的请求同时打到数据上</li>
+</ul>
+</li>
+<li>
+<p>缓存穿透</p>
+<p>概念：</p>
+<blockquote>
+<p>正常情况下，我们去查询数据都是存在,那么请求去查询一条压根儿数据库中根本就不存在的数据，也就是缓存和数据库都查询不到这条数据，但是请求每次都会打到数据库上面去。</p>
+<p>这种查询不存在就是缓存穿透</p>
+</blockquote>
+<p>解决方案：</p>
+<ul>
+<li><strong>缓存空值</strong>，并设置过期时间，当下次请求来的时候，根据key先查询缓存，如果这个时候缓存的值显示的是不存在的直接返回，当然如果该key对应的数据真的有了，那么也要记得删除这个缓存，但是如果传进来的这个不存在的Key值每次都是随机的，那存进Redis也没有意义</li>
+<li><strong>使用布隆过滤器</strong>，布隆过滤器的作用是某个 key 不存在，那么就一定不存在，它说某个 key 存在，那么很大可能是存在(存在一定的误判率)。于是我们可以在缓存之前再加一层布隆过滤器，在查询的时候先去布隆过滤器查询 key 是否存在，如果不存在就直接返回</li>
+<li><strong>Nginx</strong>,对单个IP每秒访问次数超出阈值的IP都拉黑</li>
+<li><strong>接口层增加校验</strong>，比如用户鉴权校验，参数做校验，不合法的参数直接代码Return，比如：id 做基础校验，id &lt;=0的直接拦截等。</li>
+</ul>
+</li>
+</ul>
+<h2 id="五redis持久化策略">五、redis持久化策略</h2>
+<h5 id="1rdb">1、RDB</h5>
+<p>含义:</p>
+<ul>
+<li>RDB存储的是redis的快照信息，同时RDB也是redis的默认持久化策略</li>
+</ul>
+<p><strong>触发快照的时机:</strong></p>
+<ul>
+<li>
+<p><strong>执行save和bgsave命令</strong></p>
+</li>
+<li>
+<p>配置文件设置save <!-- raw HTML omitted --> <!-- raw HTML omitted -->规则，自动间隔性执行bgsave命令</p>
+</li>
+<li>
+<p>主从复制时，从库全量复制同步主库数据，主库会执行bgsave</p>
+</li>
+<li>
+<p>执行flushall命令清空服务器数据</p>
+</li>
+<li>
+<p>执行shutdown命令关闭Redis时，会执行save命令</p>
+</li>
+</ul>
+<p>save与bgsave的区别</p>
+<ul>
+<li>
+<p>二者都是都redis进行快照生成dump文件</p>
+</li>
+<li>
+<p>save会同步阻塞redis进程，直到完成创建dump文件，在此之前是不能处理任何命令请求的，而bgsave会从主线程中fork一个子进程去生成快照文件，不会影响redis处理正常的命令请求</p>
+<p><img src="/redis/16d1a887a8ba96ea.png" alt="img"></p>
+</li>
+</ul>
+<blockquote>
+<p>fork一个子进程，子进程会把数据集先写入临时文件，写入成功之后，再替换之前的RDB文件，用二进制压缩存储，这样可以保证RDB文件始终存储的是完整的持久化内容</p>
+</blockquote>
+<p>​	所以一般情况下，由于save会同步阻塞redis的，在生产上这种情况肯定是不被允许的，所以如果采用rdb的方式持久化redis，那么最好是用bgsave来进行处理。</p>
+<p><strong>自动间隔触发</strong></p>
+<p>​	在配置文件中设置save <!-- raw HTML omitted --> <!-- raw HTML omitted -->规则，可以自动间隔性执行bgsave`命令</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-tex" data-lang="tex">################################ SNAPSHOTTING  ################################
+#
+# Save the DB on disk:
+#
+#   save &lt;seconds&gt; &lt;changes&gt;
+#
+#   Will save the DB if both the given number of seconds and the given
+#   number of write operations against the DB occurred.
+#
+#   In the example below the behaviour will be to save:
+#   after 900 sec (15 min) if at least 1 key changed
+#   after 300 sec (5 min) if at least 10 keys changed
+#   after 60 sec if at least 10000 keys changed
+#
+#   Note: you can disable saving completely by commenting out all &#34;save&#34; lines.
+#
+#   It is also possible to remove all the previously configured save
+#   points by adding a save directive with a single empty string argument
+#   like in the following example:
+#
+#   save &#34;&#34;
+
+save 900 1
+save 300 10
+save 60 10000
+</code></pre></td></tr></table>
+</div>
+</div><p>save <!-- raw HTML omitted --> <!-- raw HTML omitted -->表示在seconds秒内，至少有changes次变化，就会自动触发bgsave`命令</p>
+<ul>
+<li>save 900 1 当时间到900秒时，如果至少有1个key发生变化，就会自动触发bgsave`命令创建快照</li>
+<li>save 300 10 当时间到300秒时，如果至少有10个key发生变化，就会自动触发bgsave`命令创建快照</li>
+<li>save 60 10000 当时间到60秒时，如果至少有10000个key发生变化，就会自动触发bgsave`命令创建快照</li>
+</ul>
+<h5 id="2aof">2、AOF</h5>
+<p><strong>含义</strong>:</p>
+<p>​	AOF通过将执行的写命令同步到AOF文件的末尾，来记录数据的变化</p>
+<p>​	默认情况下,redis是没有开启AOF持久化的，开启之后每执行一条写命令都会同步到AOF缓冲区，在缓冲区达到一定执行条件的时候会追加写入AOF文件</p>
+<p>AOF的开启配置位于redis.conf，开启配置如下:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-tex" data-lang="tex"># appendonly参数开启AOF持久化
+appendonly no
+
+# AOF持久化的文件名，默认是appendonly.aof
+appendfilename &#34;appendonly.aof&#34;
+
+# AOF文件的保存位置和RDB文件的位置相同，都是通过dir参数设置的
+dir ./
+
+# 同步策略
+# appendfsync always
+appendfsync everysec
+# appendfsync no
+
+# aof重写期间是否同步
+no-appendfsync-on-rewrite no
+
+# 重写触发配置
+auto-aof-rewrite-percentage 100
+auto-aof-rewrite-min-size 64mb
+
+# 加载aof出错如何处理
+aof-load-truncated yes
+
+# 文件重写策略
+aof-rewrite-incremental-fsync yes
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>AOF的实现</strong></p>
+<p>​	AOF记录每个写命令，步骤为:</p>
+<ol>
+<li>命令追加到缓冲区(append)</li>
+<li>文件写入（write，写入到文件缓冲中）</li>
+<li>文件同步(sync，将文件缓存的数据同步到磁盘中)</li>
+</ol>
+<p><strong>命令追加</strong></p>
+<p>​	开启AOF持久化功能后，服务器每执行一个写命令，都会把该命令以协议格式追加到aof_buf缓冲区的末尾，	而不是直接写入文件，这样做的好处是可以将缓冲区内容一次性写入磁盘，减少IO次数</p>
+<p><strong>文件写入和文件同步</strong></p>
+<p>​	对于何时把缓冲区数据同步到文件中，redis提供了三种策略</p>
+<ul>
+<li>
+<p><strong>appendfsync always</strong>：将aof_buf`缓冲区的所有内容写入并同步到AOF文件，每个写命令同步写入磁盘</p>
+</li>
+<li>
+<p><strong>appendfsync everysec</strong>：将aof_buf`缓存区的内容写入AOF文件，每秒同步一次，该操作由一个线程专门负责</p>
+</li>
+<li>
+<p><strong>appendfsync no</strong>：将aof_buf`缓存区的内容写入AOF文件，什么时候同步由操作系统来决定</p>
+</li>
+</ul>
+<p><strong>appendfsync选项的默认配置为everysec，即每秒执行一次同步</strong></p>
+<p><strong>总结:</strong></p>
+<ul>
+<li>
+<p><strong>appendfsync always</strong></p>
+<p>数据安全性最高，即使遇到异常情况也仅仅会丢失最后一次请求的写入，但是这种会对磁盘进行大量的写入，由于redis是同步处理aof写入的，Redis处理命令的速度会受到磁盘性能的限制.</p>
+</li>
+<li>
+<p><strong>appendfsync everysec</strong></p>
+<p>兼容数据安全和磁盘写入性能，即使数据丢失也只会丢失一秒钟的数据，所以redis默认使用这种策略是比较合理的</p>
+</li>
+<li>
+<p><strong>appendfsync no</strong></p>
+<p>Redis不会对AOF文件执行同步操作，而是有操作系统决定何时同步，不会对Redis的性能带来影响，但假如系统崩溃，可能会丢失不定数量的数据</p>
+</li>
+</ul>
+<h5 id="1aof重写rewrite">1）<strong>AOF重写(rewrite)</strong></h5>
+<p>背景:</p>
+<p>​	由于AOF文件中会保留每个写命令，写命令又包含了key,value，也就是说随着执行命令的增多，AOF文件会越来越大也就是需要进行重写，也就是对AOF中重复的命令进行合并。比如说:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre class="chroma"><code class="language-tex" data-lang="tex">set a a1
+set a a2
+set a a3
+可以重写为
+set a a3
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>注意的点</strong>:<strong>AOF文件重写并不需要对现有的AOF文件进行任何读取、分享和写入操作，而是通过读取当前服务器数据库状态来实现的</strong></p>
+<p>aof重写的流程图:</p>
+<p><img src="/redis/image-20210314205259439.png" alt="image-20210314205259439"></p>
+<ul>
+<li>重写会有大量的写入操作，所以服务器进程会fork一个子进程来创建一个新的AOF文件</li>
+<li>在重写期间，服务器进程继续处理命令请求，如果有写入的命令，追加到<code>aof_buf</code>的同时，还会追加到aof_rewrite_buf`AOF重写缓冲区</li>
+<li>当子进程完成重写之后，会给父进程一个信号，然后父进程会把AOF重写缓冲区的内容写进新的AOF临时文件中，再对新的AOF文件改名完成替换，这样可以保证新的AOF文件与当前数据库数据的一致性</li>
+</ul>
+<h5 id="2数据恢复">2）<strong>数据恢复</strong></h5>
+<p>Redis4.0开始支持RDB和AOF的混合持久化（可以通过配置项 <code>aof-use-rdb-preamble</code> 开启）</p>
+<ul>
+<li>如果是redis进程挂掉，那么重启redis进程即可，直接基于AOF日志文件恢复数据</li>
+<li>如果是redis进程所在机器挂掉，那么重启机器后，尝试重启redis进程，尝试直接基于AOF日志文件进行数据恢复，如果AOF文件破损，那么用<code>redis-check-aof fix</code>命令修复</li>
+<li>如果没有AOF文件，会去加载RDB文件</li>
+<li>如果redis当前最新的AOF和RDB文件出现了丢失/损坏，那么可以尝试基于该机器上当前的某个最新的RDB数据副本进行数据恢复</li>
+</ul>
+<h5 id="3rdb和aof优缺点">3、RDB和AOF优缺点</h5>
+<p>关于RDB和AOF的优缺点，官网上面也给了比较详细的说明 <a href="https://redis.io/topics/persistence">链接</a></p>
+<p><strong>RDB</strong></p>
+<ul>
+<li>
+<p>优点：</p>
+<ul>
+<li>RDB快照是一个压缩过的非常紧凑的文件，保存着某个时间点的数据集，适合做数据的备份，灾难恢复</li>
+<li>可以最大化Redis的性能，在保存RDB文件，服务器进程只需fork一个子进程来完成RDB文件的创建，父进程不需要做IO操作</li>
+<li>与AOF相比，恢复大数据集的时候会更快</li>
+</ul>
+</li>
+<li>
+<p>缺点：</p>
+<ul>
+<li>RDB的数据安全性是不如AOF的，保存整个数据集的过程是比繁重的，根据配置可能要几分钟才快照一次，如果服务器宕机，那么就可能丢失几分钟的数据</li>
+<li>Redis数据集较大时，fork的子进程要完成快照会比较耗CPU、耗时</li>
+</ul>
+</li>
+</ul>
+<p><strong>AOF</strong></p>
+<ul>
+<li>
+<p>优点：</p>
+<ul>
+<li>数据更完整，安全性更高，秒级数据丢失（取决fsync策略，如果是everysec，最多丢失1秒的数据）</li>
+<li>AOF文件是一个只进行追加的日志文件，且写入操作是以Redis协议的格式保存的，内容是可读的，适合误删紧急恢复</li>
+</ul>
+</li>
+<li>
+<p>缺点:</p>
+<ul>
+<li>对于相同的数据集，AOF文件的体积要大于RDB文件，数据恢复也会比较慢</li>
+<li>根据所使用的 fsync 策略，AOF 的速度可能会慢于 RDB。 不过在一般情况下， 每秒 fsync 的性能依然非常高</li>
+</ul>
+</li>
+</ul>
+<h5 id="4如何选择rdb和aof">4、如何选择RDB和AOF</h5>
+<ul>
+<li>如果是数据不那么敏感，且可以从其他地方重新生成补回的，那么可以关闭持久化</li>
+<li>如果是数据比较重要，不想再从其他地方获取，且可以承受数分钟的数据丢失，比如缓存等，那么可以只使用RDB</li>
+<li>如果是用做内存数据库，要使用Redis的持久化，建议是RDB和AOF都开启，或者定期执行<code>bgsave</code>做快照备份，RDB方式更适合做数据的备份，AOF可以保证数据的不丢失</li>
+</ul>
+<h2 id="六集群">六、集群</h2>
+<h4 id="1主从复制">1、主从复制</h4>
+<p><a href="https://juejin.cn/post/6844903943764443149">参考链接</a></p>
+<p>主从复制的优势</p>
+<ul>
+<li>数据冗余，实现数据的热备份</li>
+<li>故障恢复，避免单点故障带来的服务不可用</li>
+<li>读写分离，负载均衡。主节点负载读写，从节点负责读，提高服务器并发量</li>
+<li>高可用基础，是哨兵机制和集群实现的基础</li>
+</ul>
+<p><strong>完整重同步</strong></p>
+<p><!-- raw HTML omitted --></p>
+<p><strong>部分重同步</strong></p>
+<h2 id="七redis数据结构底层实现">七、redis数据结构底层实现</h2>
+<h4 id="list列表">list(列表)</h4>
+<p>在redis 3.2之前采用以下两种方式作为底层实现</p>
+<ul>
+<li>
+<p>压缩列表 ziplist</p>
+</li>
+<li>
+<p>双向链表linkedlist</p>
+<blockquote>
+<p>因为双向链表占用的内存比压缩列表要多， 所以当创建新的列表键时， 列表会优先考虑使用压缩列表， 并且在有需要的时候， 才从压缩列表实现转换到双向链表实现</p>
+</blockquote>
+</li>
+</ul>
+<p>在redis3.2版本之后采用quicklist来作为底层实现</p>
+<p><img src="/redis/image-20210507112534946.png" alt="image-20210507112534946"></p>
+<blockquote>
+<p>quicklist 是结合了ziplist与linked的优点而设计的，提升了查询效率，降低了内存占用</p>
+<ul>
+<li>每一个quicklist node 都对应一个ziplist，并且每个quicklist node 都是双指针的指向前节点以及后继节点</li>
+<li>每个ziplist里都对应多个value,比如说在向列表中添加数据时，添加了{1, 2,3,4,5,6,7,8,9,10}，那么前面五个数据就可能放到一个ziplist中，后面五个数据放到另外一个ziplist中</li>
+</ul>
+</blockquote>
+<p>ziplist能节省内存的原因</p>
+<ul>
+<li>
+<p><strong>ziplist 是一个特殊的双向链表</strong></p>
+<p>特殊之处在于：没有维护双向指针:prev next；</p>
+<blockquote>
+<p>而是存储上一个 entry的长度和 当前entry的长度，通过长度推算下一个元素在什么地方。
+牺牲读取的性能，获得高效的存储空间，因为(简短字符串的情况)存储指针比存储entry长度 更费内存。这是典型的“时间换空间”</p>
+</blockquote>
+</li>
+</ul>
+<p>ziplist使用局限性</p>
+<ul>
+<li>字段、值比较小，才会用ziplist。</li>
+</ul>
+<p>list(列表结构)如何实现阻塞队列</p>
+<p>​					blpop 、 brpop 和 brpoplpush这个几个阻塞命令的实现原理：</p>
+<p>​					只有当这些命令被用于空列表时， 它们才会阻塞客户端。
+​					阻塞一个客户端需要执行以下步骤：</p>
+<ul>
+<li>
+<p>将客户端的状态设为“正在阻塞”，并记录阻塞这个客户端的各个键，以及阻塞的最长时限（timeout）等数据。</p>
+</li>
+<li>
+<p>将客户端的信息记录到 server.db[i]-&gt;blocking_keys 中（其中 i 为客户端所使用的数据库号码）。</p>
+</li>
+<li>
+<p>继续维持客户端和服务器之间的网络连接，但不再向客户端传送任何信息，造成客户端阻塞。
+步骤 2 是将来解除阻塞的关键， server.db[i]-&gt;blocking_keys 是一个字典， 字典的键是那些造成客户端阻塞的键， 而字典的值是一个链表， 链表里保存了所有因为这个键而被阻塞的客户端 （被同一个键所阻塞的客户端可能不止一个）：</p>
+<p><img src="/redis/image-20210507113811011.png" alt="image-20210507113811011"></p>
+<blockquote>
+<p><strong>简单来说实现阻塞的关键步骤就是当客户端请求服务端时，如果列表中没有数据时，这个时候就不返回数据给客户端，客户端会一直阻塞，直到数据到来，如果设置了超时时间，直到超时时间到达时，仍然没有数据，再返回空给客户端，客户端才能解除阻塞</strong></p>
+</blockquote>
+</li>
+</ul>
+<h4 id="zset有序集合">zset(有序集合)</h4>
+<p><a href="https://www.jianshu.com/p/09c3b0835ba6">参考链接</a></p>
+<p><img src="/redis/image-20210513194434440.png" alt="image-20210513194434440"></p>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">bsworld</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        0001-01-01 00:00
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a target="_blank" rel="license noopener" href="https://github.com/nusr/blog/blob/master/LICENSE">MIT</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      
+      <nav class="post-nav">
+        <a class="prev" href="/post/ConcurrentHashMap/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default"></span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/%E9%A1%BA%E6%97%B6%E9%92%88%E6%89%93%E5%8D%B0%E7%9F%A9%E9%98%B5/">
+            <span class="next-text nav-default">顺时针打印矩阵</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="bsworldx@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/abxworld/abxworld.github.io" class="iconfont icon-github" title="github"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">bsworld</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-CN".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-138883536-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

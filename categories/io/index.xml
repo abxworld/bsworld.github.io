@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>io on CHANGE</title>
+    <link>http://localhost:1313/categories/io/</link>
+    <description>Recent content in io on CHANGE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 07 Apr 2021 19:35:59 +0800</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/categories/io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>IO分享</title>
+      <link>http://localhost:1313/post/IO%E5%88%86%E4%BA%AB/</link>
+      <pubDate>Wed, 07 Apr 2021 19:35:59 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/IO%E5%88%86%E4%BA%AB/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

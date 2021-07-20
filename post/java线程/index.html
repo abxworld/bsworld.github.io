@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Java线程 - CHANGE</title>
+  <meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+
+
+<meta name="author" content="bsworld" /><meta name="description" content="" /><meta name="keywords" content="Mac, Github, Vue, React, Front End" />
+
+
+
+
+
+
+<meta name="generator" content="Hugo 0.74.3 with theme even" />
+
+
+<link rel="canonical" href="http://localhost:1313/post/java%E7%BA%BF%E7%A8%8B/" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<link href="/sass/main.min.651e6917abb0239242daa570c2bec9867267bbcd83646da5a850afe573347b44.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.css" integrity="sha256-7TyXnr2YU040zfSP+rEcz29ggW4j56/ujTPwjMzyqFY=" crossorigin="anonymous">
+<link rel="stylesheet" href="/css/reset-even.css">
+
+
+<meta property="og:title" content="Java线程" />
+<meta property="og:description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://localhost:1313/post/java%E7%BA%BF%E7%A8%8B/" />
+<meta property="article:published_time" content="2021-03-10T20:33:07+08:00" />
+<meta property="article:modified_time" content="2021-03-10T20:33:07+08:00" />
+<meta itemprop="name" content="Java线程">
+<meta itemprop="description" content="">
+<meta itemprop="datePublished" content="2021-03-10T20:33:07+08:00" />
+<meta itemprop="dateModified" content="2021-03-10T20:33:07+08:00" />
+<meta itemprop="wordCount" content="1472">
+
+
+
+<meta itemprop="keywords" content="java,线程," />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Java线程"/>
+<meta name="twitter:description" content=""/>
+
+<!--[if lte IE 9]>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/classlist/1.1.20170427/classList.min.js"></script>
+<![endif]-->
+
+<!--[if lt IE 9]>
+  <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>
+  <div id="mobile-navbar" class="mobile-navbar">
+  <div class="mobile-header-logo">
+    <a href="/" class="logo">CHANGE</a>
+  </div>
+  <div class="mobile-navbar-icon">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+</div>
+<nav id="mobile-menu" class="mobile-menu slideout-menu">
+  <ul class="mobile-menu-list">
+    <a href="/">
+        <li class="mobile-menu-item">首页</li>
+      </a><a href="/post/">
+        <li class="mobile-menu-item">归档</li>
+      </a><a href="/categories/">
+        <li class="mobile-menu-item">分类</li>
+      </a><a href="/tags/">
+        <li class="mobile-menu-item">标签</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">About</li>
+      </a><a href="/about/">
+        <li class="mobile-menu-item">关于我</li>
+      </a><a href="https://github.com/abxworld/abxworld.github.io">
+        <li class="mobile-menu-item">阅读清单</li>
+      </a>
+  </ul>
+</nav>
+  <div class="container" id="mobile-panel">
+    <header id="header" class="header">
+        <div class="logo-wrapper">
+  <a href="/" class="logo">CHANGE</a>
+</div>
+
+<nav class="site-navbar">
+  <ul id="menu" class="menu">
+    <li class="menu-item">
+        <a class="menu-item-link" href="/">首页</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/post/">归档</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/categories/">分类</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/tags/">标签</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">About</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="/about/">关于我</a>
+      </li><li class="menu-item">
+        <a class="menu-item-link" href="https://github.com/abxworld/abxworld.github.io">阅读清单</a>
+      </li>
+  </ul>
+</nav>
+    </header>
+
+    <main id="main" class="main">
+      <div class="content-wrapper">
+        <div id="content" class="content">
+          <article class="post">
+    
+    <header class="post-header">
+      <h1 class="post-title">Java线程</h1>
+
+      <div class="post-meta">
+        <span class="post-time"> 2021-03-10 20:33 </span>
+        
+          <span class="more-meta"> 约 1472 字 </span>
+          <span class="more-meta"> 预计阅读 3 分钟 </span>
+        <span id="busuanzi_container_page_pv" class="more-meta"> <span id="busuanzi_value_page_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次阅读 </span>
+      </div>
+    </header>
+
+    
+    <div class="post-content">
+      <h2 id="一线程基本概念">一、线程基本概念:</h2>
+<p>线程与进程的区别:</p>
+<ul>
+<li>进程是资源分配的基本单位，线程是任务调度的基本单位</li>
+</ul>
+<p>Java线程的实现:</p>
+<ul>
+<li>内核线程实现，java线程 1:1对应内核线程，即轻量级进程</li>
+</ul>
+<h2 id="二java线程状态">二、Java线程状态</h2>
+<ul>
+<li>
+<p>新建</p>
+<blockquote>
+<p>创建后尚未启动的线程处于这种状态，还未执行start方法的时候</p>
+</blockquote>
+</li>
+<li>
+<p>运行</p>
+<blockquote>
+<p>运行态中又可以细分为</p>
+<ul>
+<li>准备就绪，即正在等待着操作系统为它分配执行时间。</li>
+<li>正在执行任务</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>阻塞</p>
+<blockquote>
+<p>线程被阻塞了，“阻塞状态”与“等待状态”的区别是“阻塞状态”在等待着获取到 一个排它锁，这个事件将在另外一个线程放弃这个锁的时候发生；而“等待状态”则是在等待一段时 间，或者唤醒动作的发生。在程序等待进入同步区域的时候，线程将进入这种状态</p>
+</blockquote>
+</li>
+<li>
+<p>限期等待</p>
+<blockquote>
+<p>处于这种状态的线程也不会被分配处理器执行时间，不过无须等待 被其他线程显式唤醒，在一定时间之后它们会由系统自动唤醒。以下方法会让线程进入限期等待状 态:</p>
+<ul>
+<li>Thread::sleep()方法</li>
+<li>设置了Timeout参数的Object::wait()方法</li>
+<li>设置了Timeout参数的Thread::join()方法</li>
+<li>LockSupport::parkNanos()方法</li>
+<li>LockSupport::parkUntil()方法</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>无限期等待</p>
+<blockquote>
+<ul>
+<li>没有设置Timeout参数的Object::wait()方法</li>
+<li>没有设置Timeout参数的Thread::join()方法</li>
+<li>LockSupport::park()方法</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>结束</p>
+<p><img src="/java%E7%BA%BF%E7%A8%8B/image-20210310204243151.png" alt="image-20210310204243151"></p>
+</li>
+</ul>
+<h2 id="三线程等待状态的区别">三、线程等待状态的区别</h2>
+<ul>
+<li>
+<p>Thread.sleep(timeout)</p>
+<blockquote>
+<ul>
+<li>线程不管有没有获取到锁都可以调用该方法，在睡眠结束后恢复执行</li>
+<li>线程在睡眠过程中不会释放已持有的锁</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>Object.wait(timeout)</p>
+<blockquote>
+<ul>
+<li>
+<p>这个方法是属于object类里方法，也就是任何一个对象都可以进行调用</p>
+</li>
+<li>
+<p><strong>线程必须在持有该对象的对象锁的情况下,才能调用该对象的wait方法</strong>，否则会报异常，如果A线程持有了该对象的对象锁，如果B线程去调用该对象的wait方法会报异常，原因是该对象的对象锁已经被A线程持有，B线程并未持有该对象的对象锁</p>
+</li>
+<li>
+<p>如果未加超时时间，则会一直阻塞，除非对该对象调用notify或者notifyAll方法，如果加了超时时间，则在超时时间结束后也会恢复执行</p>
+</li>
+<li>
+<p>线程会释放当前持有的锁，所以一般情况下，如果被唤醒了需要重新获取锁，才能继续执行同步代码块中的代码</p>
+</li>
+<li>
+<p>notify或者notifyAll方法的调用必须要在wait方法之后执行，否则会IllegalMonitorStateException</p>
+</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p>LockSuppor.part(timeout)</p>
+<ul>
+<li>lock锁中的await方法的底层实现</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://zhuanlan.zhihu.com/p/309822935">关于synchronized，wait，sleep，park的底层实现</a></p>
+<p>引用上述文章的结论:</p>
+<blockquote>
+<p>系统级别：这3种方式没有区别，最终都是调用系统的pthread_cond_wait方法</p>
+<p>2.c++线程级别：Thread.sleep使用的是线程的SleepEvent对象，LockSupport.park使用的是线程的Parker对象，synchronized和Object.wait使用的是线程的ParkEvent对象</p>
+<p>3.java级别：Thread.sleep可打断并抛出异常；LockSupport.park可打断，且不会抛出异常；synchronized不可打断；Object.wait可打断并抛出异常</p>
+<p>4.InterruptedException其实仅仅是jvm逻辑上对打断标记的判断而已</p>
+<p>5.Thread.interrupt的本质在于修改打断标记，并调用3个unpark()方法唤醒线程</p>
+<p>4.更概括来说，无论是哪种线程阻塞的方式，在系统级别和c++线程级别来说都是可打断的。而jvm通过代码逻辑使得3种线程阻塞的方式在java级别上面对同一个打断方法时会有不同的表现形式</p>
+</blockquote>
+    </div>
+
+    <div class="post-copyright">
+  <p class="copyright-item">
+    <span class="item-title">文章作者</span>
+    <span class="item-content">bsworld</span>
+  </p>
+  <p class="copyright-item">
+    <span class="item-title">上次更新</span>
+    <span class="item-content">
+        2021-03-10 20:33
+        
+    </span>
+  </p>
+  
+  <p class="copyright-item">
+    <span class="item-title">许可协议</span>
+    <span class="item-content"><a target="_blank" rel="license noopener" href="https://github.com/nusr/blog/blob/master/LICENSE">MIT</a></span>
+  </p>
+</div>
+<footer class="post-footer">
+      <div class="post-tags">
+          <a href="/tags/java/">java</a>
+          <a href="/tags/%E7%BA%BF%E7%A8%8B/">线程</a>
+          </div>
+      <nav class="post-nav">
+        <a class="prev" href="/post/%E6%B8%85%E5%8D%95/">
+            <i class="iconfont icon-left"></i>
+            <span class="prev-text nav-default">清单</span>
+            <span class="prev-text nav-mobile">上一篇</span>
+          </a>
+        <a class="next" href="/post/hugo&#43;typora%E6%95%99%E7%A8%8B/">
+            <span class="next-text nav-default">Hugo&#43;typora教程</span>
+            <span class="next-text nav-mobile">下一篇</span>
+            <i class="iconfont icon-right"></i>
+          </a>
+      </nav>
+    </footer>
+  </article>
+        </div>
+        
+
+  
+
+  
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="social-links">
+      <a href="bsworldx@gmail.com" class="iconfont icon-email" title="email"></a>
+      <a href="https://github.com/abxworld/abxworld.github.io" class="iconfont icon-github" title="github"></a>
+  <a href="http://localhost:1313/index.xml" type="application/rss+xml" class="iconfont icon-rss" title="rss"></a>
+</div>
+
+<div class="copyright">
+  <span class="power-by">
+    由 <a class="hexo-link" href="https://gohugo.io">Hugo</a> 强力驱动
+  </span>
+  <span class="division">|</span>
+  <span class="theme-info">
+    主题 - 
+    <a class="theme-link" href="https://github.com/olOwOlo/hugo-theme-even">Even</a>
+  </span>
+
+  <div class="busuanzi-footer">
+    <span id="busuanzi_container_site_pv"> 本站总访问量 <span id="busuanzi_value_site_pv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 次 </span>
+      <span class="division">|</span>
+    <span id="busuanzi_container_site_uv"> 本站总访客数 <span id="busuanzi_value_site_uv"><img src="/img/spinner.svg" alt="spinner.svg"/></span> 人 </span>
+  </div>
+
+  <span class="copyright-year">
+    &copy; 
+    2020 - 
+    2021
+    <span class="heart">
+      <i class="iconfont icon-heart"></i>
+    </span>
+    <span class="author">bsworld</span>
+  </span>
+</div>
+    </footer>
+
+    <div class="back-to-top" id="back-to-top">
+      <i class="iconfont icon-up"></i>
+    </div>
+  </div>
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/slideout@1.0.1/dist/slideout.min.js" integrity="sha256-t+zJ/g8/KXIJMjSVQdnibt4dlaDxc9zXr/9oNPeWqdg=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.1.20/dist/jquery.fancybox.min.js" integrity="sha256-XVLffZaxoWfGUEbdzuLi7pwaUJv1cecsQJQqGLe7axY=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.min.js" integrity="sha256-jwCP0NAdCBloaIWTWHmW4i3snUNMHUNO+jr9rYd2iOI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/timeago.js@3.0.2/dist/timeago.locales.min.js" integrity="sha256-ZwofwC1Lf/faQCzN7nZtfijVV6hSwxjQMwXL4gn9qU8=" crossorigin="anonymous"></script>
+  <script><!-- NOTE: timeago.js uses the language code format like "zh_CN" (underscore and case sensitive) -->
+    var languageCode = "zh-CN".replace(/-/g, '_').replace(/_(.*)/, function ($0, $1) {return $0.replace($1, $1.toUpperCase());});
+    timeago().render(document.querySelectorAll('.timeago'), languageCode);
+    timeago.cancel();  
+  </script>
+
+
+
+<script type="text/javascript" src="/js/main.min.d7b7ada643c9c1a983026e177f141f7363b4640d619caf01d8831a6718cd44ea.js"></script>
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-138883536-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+
+
+
+
+</body>
+</html>

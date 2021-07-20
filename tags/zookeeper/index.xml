@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>zookeeper on CHANGE</title>
+    <link>http://localhost:1313/tags/zookeeper/</link>
+    <description>Recent content in zookeeper on CHANGE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 20 Sep 2020 11:23:10 +0800</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/tags/zookeeper/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>LB-BS-CLIENT</title>
+      <link>http://localhost:1313/post/LB-BS-CLIENT/</link>
+      <pubDate>Sun, 20 Sep 2020 11:23:10 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/LB-BS-CLIENT/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

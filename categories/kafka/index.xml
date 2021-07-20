@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>kafka on CHANGE</title>
+    <link>http://localhost:1313/categories/kafka/</link>
+    <description>Recent content in kafka on CHANGE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 28 Mar 2021 18:10:54 +0800</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/categories/kafka/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Kafka</title>
+      <link>http://localhost:1313/post/kafka/</link>
+      <pubDate>Sun, 28 Mar 2021 18:10:54 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/kafka/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

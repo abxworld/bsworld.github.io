@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>offer on CHANGE</title>
+    <link>http://localhost:1313/tags/offer/</link>
+    <description>Recent content in offer on CHANGE</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 08 May 2021 13:07:37 +0800</lastBuildDate>
+    
+	<atom:link href="http://localhost:1313/tags/offer/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>包含min函数的栈</title>
+      <link>http://localhost:1313/post/%E5%8C%85%E5%90%ABmin%E5%87%BD%E6%95%B0%E7%9A%84%E6%A0%88/</link>
+      <pubDate>Sat, 08 May 2021 13:07:37 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/%E5%8C%85%E5%90%ABmin%E5%87%BD%E6%95%B0%E7%9A%84%E6%A0%88/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>数据流中的中位数</title>
+      <link>http://localhost:1313/post/%E6%95%B0%E6%8D%AE%E6%B5%81%E4%B8%AD%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/</link>
+      <pubDate>Sat, 08 May 2021 11:29:43 +0800</pubDate>
+      
+      <guid>http://localhost:1313/post/%E6%95%B0%E6%8D%AE%E6%B5%81%E4%B8%AD%E7%9A%84%E4%B8%AD%E4%BD%8D%E6%95%B0/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
